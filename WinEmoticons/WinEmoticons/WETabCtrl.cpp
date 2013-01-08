@@ -24,7 +24,7 @@ CWETabCtrl::CWETabCtrl(CWnd* pParent /*=NULL*/)
 	m_nFontSize = 100;
 	m_strFontName = _T("Î¢ÈíÑÅºÚ");
 	m_nColumnCount = 5;
-	m_nRowCount = 10;
+	m_nRowCount = 5;
 	m_nItemPadding = 5;
 
 	m_lstPageBackgrounds.AddTail(RGB(44,143,197));
@@ -155,6 +155,7 @@ void CWETabCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CWETabCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
+	// unsupport double click, to make it more simple
 	OnLButtonDown(nFlags,point);
 }
 
@@ -164,18 +165,29 @@ void CWETabCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 	{
 		ReleaseCapture();
 		
-		CWEPaintUint *pHit = HitTest(point);
+		CWEPaintUint *pHit = HitTest(point,LBTNUP);
 		if (pHit != NULL)
 		{
 			CWETabPage *pPage = DYNAMIC_DOWNCAST(CWETabPage,pHit);
-			ActivePage(pPage);
+			if (pPage != NULL)
+			{
+				ActivePage(pPage);
+			}
+			CWETabItem *pItem = DYNAMIC_DOWNCAST(CWETabItem,pHit);
+			if (pItem != NULL)
+			{
+				if (GetParent() != NULL)
+				{
+					GetParent()->SendMessage(MSG_HITITEM,(WPARAM)(LPCTSTR)pItem->strContent,0);
+				}
+			}
 		}
 	}
 }
 
 void CWETabCtrl::ActivePage( CWETabPage * pPage )
 {
-	if (pPage != NULL && !pPage->bIsActive)
+	if (!pPage->bIsActive)
 	{
 		m_pActivePage->bIsActive = FALSE;
 		m_pActivePage = pPage;

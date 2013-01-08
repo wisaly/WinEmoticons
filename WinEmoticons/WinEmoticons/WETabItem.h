@@ -17,7 +17,10 @@ public:
 public:
 	void Draw(CDC *pDC);
 	void MoveRect(CRect rcNew);
+	// hit test
+	CWEPaintUint *HitTest(CPoint ptHit,MouseEvent meMouse = NOTHING);
 
 	void GetItemRect( CRect &rcThis );
+	
 
 };

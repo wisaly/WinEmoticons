@@ -48,8 +48,8 @@ BOOL CWinEmoticonsApp::InitInstance()
 
 	CWinApp::InitInstance();
 
-	//CWinEmoticonsDlg dlg;
-	CTestContainer dlg;
+	CWinEmoticonsDlg dlg;
+	//CTestContainer dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

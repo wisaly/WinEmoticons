@@ -39,3 +39,26 @@ void CWETabItem::MoveRect( CRect rcNew )
 {
 	m_rcUnit = rcNew;
 }
+
+CWEPaintUint * CWETabItem::HitTest( CPoint ptHit,MouseEvent meMouse /*= NOTHING*/ )
+{
+	CRect rcThis;
+	GetItemRect(rcThis);
+
+	if (!rcThis.PtInRect(ptHit))
+	{
+		return NULL;
+	}
+	
+	// in unit
+	if (meMouse == NOTHING)
+	{
+		return this;
+	}
+	if (meMouse == LBTNUP)
+	{
+		return this;
+	}
+
+	return this;
+}

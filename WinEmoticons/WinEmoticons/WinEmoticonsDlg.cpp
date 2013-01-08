@@ -18,7 +18,7 @@
 
 
 CWinEmoticonsDlg::CWinEmoticonsDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CWinEmoticonsDlg::IDD, pParent),m_dlgPopup(m_pFocusedControl,this)
+	: CDialog(CWinEmoticonsDlg::IDD, pParent),m_dlgPopup(m_pFocusedControl)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
@@ -57,7 +57,7 @@ BOOL CWinEmoticonsDlg::OnInitDialog()
 
 	m_dlgPopup.Create(CDlgPopup::IDD,this);
 
-	// TODO: 在此添加额外的初始化代码
+	// 
 	m_nHotKeyId =  ::GlobalAddAtom(_T("WinEmoticonsHotkey")) - 0xC000;
 	while(!::RegisterHotKey(GetSafeHwnd(), m_nHotKeyId, MOD_CONTROL, 'E'))
 	{
@@ -88,6 +88,9 @@ LRESULT CWinEmoticonsDlg::OnHotKey( WPARAM wParam,LPARAM lParam )
 		// Toggle show popup
 		if (!m_dlgPopup.IsWindowVisible())
 		{
+			CRect rcWindow;
+			m_dlgPopup.GetWindowRect(rcWindow);
+			m_dlgPopup.MoveWindow(ptCursor.x,ptCursor.y,rcWindow.Width(),rcWindow.Height());
 			m_dlgPopup.PopupWindow();
 		}
 		else

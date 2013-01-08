@@ -70,7 +70,7 @@ CWEPaintUint *CWETabPage::HitTest( CPoint ptHit,MouseEvent meMouse )
 			
 			if (rcBody.PtInRect(ptHit))
 			{
-				return CWEPaintUint::HitTest(ptHit);
+				return CWEPaintUint::HitTest(ptHit,meMouse);
 			}
 		}
 

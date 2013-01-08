@@ -1,3 +1,4 @@
+#include "WETabCtrl.h"
 #pragma once
 
 
@@ -16,6 +17,7 @@ public:
 
 	void SendEmoticon(CString strText);
 
+	CWETabCtrl m_wndTab;
 	CWnd *&m_pwndFocused;
 // 对话框数据
 	enum { IDD = IDD_POPUP };
@@ -27,5 +29,7 @@ protected:
 public:
 	afx_msg int OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message);
 	afx_msg LRESULT OnNcHitTest(CPoint point);
-	afx_msg void OnBnClickedButton1();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg LRESULT OnMsgTabItemHit(WPARAM wParam,LPARAM lParam);
 };

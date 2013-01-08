@@ -115,7 +115,7 @@ CWEPaintUint * CWEPaintUint::HitTest( CPoint ptHit,MouseEvent meMouse )
 		CWEPaintUint *pChild = m_pFirstChild;
 		while (pChild != NULL)
 		{
-			CWEPaintUint *pChildHit = pChild->HitTest(ptHit);
+			CWEPaintUint *pChildHit = pChild->HitTest(ptHit,meMouse);
 			if (pChildHit != NULL)
 			{
 				return pChildHit;

@@ -16,6 +16,7 @@ public:
 	// Attributes:
 public:
 	enum { IDD = IDD_WETABCTRL };
+	enum { MSG_HITITEM = WM_USER + 0x100};
 private:
 	// ctrl attributes
 	int		m_nCtrlPadding;				// padding of this ctrl
