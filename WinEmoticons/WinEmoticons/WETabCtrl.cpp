@@ -23,7 +23,7 @@ CWETabCtrl::CWETabCtrl(CWnd* pParent /*=NULL*/)
 	m_nPagePadding = 2;
 	m_nFontSize = 100;
 	m_strFontName = _T("Î¢ÈíÑÅºÚ");
-	m_nColumnCount = 5;
+	m_nColumnCount = 3;
 	m_nRowCount = 5;
 	m_nItemPadding = 5;
 
