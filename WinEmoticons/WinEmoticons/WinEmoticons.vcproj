@@ -18,7 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="..\..\Bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
@@ -96,11 +96,11 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="..\..\Bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
-			CharacterSet="2"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -307,6 +307,34 @@
 			</File>
 			<File
 				RelativePath=".\WETabPage.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Xml"
+			>
+			<File
+				RelativePath=".\Xml.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Xml.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XmlNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XmlNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XmlNodes.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XmlNodes.h"
 				>
 			</File>
 		</Filter>
