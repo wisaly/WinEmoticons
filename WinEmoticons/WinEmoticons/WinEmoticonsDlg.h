@@ -32,7 +32,6 @@ protected:
 	// 生成的消息映射函数
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnHotKey(WPARAM wParam,LPARAM lParam);
-	afx_msg void OnMenuItem(UINT nID);
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();

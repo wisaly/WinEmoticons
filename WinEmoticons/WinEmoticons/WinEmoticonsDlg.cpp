@@ -10,8 +10,6 @@
 #define new DEBUG_NEW
 #endif
 
-#define ID_BEGIN	0x500
-#define ID_END		ID_BEGIN + 5000
 // CWinEmoticonsDlg 对话框
 
 
@@ -38,7 +36,6 @@ void CWinEmoticonsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CWinEmoticonsDlg, CDialog)
 	ON_WM_PAINT()
 	ON_MESSAGE(WM_HOTKEY,OnHotKey)
-	ON_COMMAND_RANGE(ID_BEGIN,ID_END,OnMenuItem)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDOK, &CWinEmoticonsDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
@@ -55,7 +52,7 @@ BOOL CWinEmoticonsDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-	m_dlgPopup.Create(CDlgPopup::IDD,this);
+	m_dlgPopup.Create(CDlgPopup::IDD);
 
 	// 
 	m_nHotKeyId =  ::GlobalAddAtom(_T("WinEmoticonsHotkey")) - 0xC000;
@@ -103,18 +100,6 @@ LRESULT CWinEmoticonsDlg::OnHotKey( WPARAM wParam,LPARAM lParam )
 	return 0;
 }
 
-void CWinEmoticonsDlg::OnMenuItem( UINT nID )
-{
-// 	if (m_pForeWnd != NULL && m_pForeWnd->GetSafeHwnd() != NULL)
-// 	{
-// 		m_pForeWnd->SetForegroundWindow();
-// 	}
-
-	if (m_pFocusedControl != NULL && m_pFocusedControl->GetSafeHwnd() != NULL)
-	{
-		m_pFocusedControl->SendMessage(WM_CHAR,WPARAM('A'),LPARAM(0));
-	}
-}
 void CWinEmoticonsDlg::OnBnClickedOk()
 {
 	//OnOK();
