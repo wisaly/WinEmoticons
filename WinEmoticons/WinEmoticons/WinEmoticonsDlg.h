@@ -23,10 +23,6 @@ public:
 // 实现
 protected:
 	HICON m_hIcon;
-	int m_nHotKeyId;
-	CMenu m_menu;
-	CWnd *m_pForeWnd;
-	CWnd *m_pFocusedControl;
 	CDlgPopup m_dlgPopup;
 
 	// 生成的消息映射函数

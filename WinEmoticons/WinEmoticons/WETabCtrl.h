@@ -5,17 +5,16 @@
 
 // CWETabCtrl 对话框
 
-class CWETabCtrl : public CDialog,public CWEPaintUint
+class CWETabCtrl : public CWnd,public CWEPaintUint
 {
 	DECLARE_DYNAMIC(CWETabCtrl)
 
 public:
-	CWETabCtrl(CWnd* pParent = NULL);   // 标准构造函数
+	CWETabCtrl();   // 标准构造函数
 	virtual ~CWETabCtrl();
 
 	// Attributes:
 public:
-	enum { IDD = IDD_WETABCTRL };
 	enum { MSG_HITITEM = WM_USER + 0x100};
 private:
 	// ctrl attributes
@@ -42,6 +41,7 @@ private:
 
 	//Methods:
 public:
+	void Create(CRect rcWindow,CWnd *pParent,UINT nId);
 	void Draw(CDC *pDC);
 	CWETabPage *AppendPage(CString strCaption = _T(""));
 	void ActivePage( CWETabPage * pPage );
@@ -50,7 +50,6 @@ private:
 	void GetPageRect( CRect &rcPage );
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
 public:

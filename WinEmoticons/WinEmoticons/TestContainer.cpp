@@ -41,7 +41,9 @@ BOOL CTestContainer::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	//
-	m_wndWETabCtrl.Create(CWETabCtrl::IDD,this);
+	CRect rcClient;
+	m_wndWETabCtrl.GetClientRect(&rcClient);
+	m_wndWETabCtrl.Create(rcClient,this,1);;
 	m_wndWETabCtrl.ShowWindow(SW_SHOW);
 
 

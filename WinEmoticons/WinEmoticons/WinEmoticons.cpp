@@ -50,7 +50,7 @@ BOOL CWinEmoticonsApp::InitInstance()
 
 	CWinEmoticonsDlg dlg;
 	//CTestContainer dlg;
-	m_pMainWnd = &dlg;
+	//m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{

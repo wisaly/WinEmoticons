@@ -8,10 +8,10 @@
 
 // CWETabCtrl ¶Ô»°¿ò
 
-IMPLEMENT_DYNAMIC(CWETabCtrl, CDialog)
+IMPLEMENT_DYNAMIC(CWETabCtrl, CWnd)
 
-CWETabCtrl::CWETabCtrl(CWnd* pParent /*=NULL*/)
-: CDialog(CWETabCtrl::IDD, pParent),CWEPaintUint()
+CWETabCtrl::CWETabCtrl()
+: CWEPaintUint()
 {
 	m_nCtrlPadding = 5;
 	m_nPageCount = 0;
@@ -41,13 +41,7 @@ CWETabCtrl::~CWETabCtrl()
 {
 }
 
-void CWETabCtrl::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-}
-
-
-BEGIN_MESSAGE_MAP(CWETabCtrl, CDialog)
+BEGIN_MESSAGE_MAP(CWETabCtrl, CWnd)
 	ON_WM_SIZE()
 	ON_WM_PAINT()
 	ON_WM_CREATE()
@@ -213,4 +207,10 @@ void CWETabCtrl::Redraw()
 {
 	CClientDC dc(this);
 	Draw(&dc);
+}
+
+void CWETabCtrl::Create( CRect rcWindow,CWnd *pParent,UINT nId )
+{
+	LPCTSTR pClassName = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW,AfxGetApp()->LoadStandardCursor(IDC_ARROW));
+	CWnd::Create(pClassName,_T("WETabCtrl"),WS_VISIBLE|WS_CHILD,rcWindow,pParent,nId);
 }

@@ -5,7 +5,6 @@
 #define IDD_WINEMOTICONS_DIALOG         102
 #define IDR_MAINFRAME                   128
 #define IDD_POPUP                       129
-#define IDD_WETABCTRL                   130
 #define IDD_DIALOG1                     131
 #define IDD_TESTCONTAINER               131
 #define IDC_BUTTON1                     1002

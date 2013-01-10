@@ -16,7 +16,7 @@
 
 
 CWinEmoticonsDlg::CWinEmoticonsDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CWinEmoticonsDlg::IDD, pParent),m_dlgPopup(m_pFocusedControl)
+	: CDialog(CWinEmoticonsDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
@@ -24,8 +24,6 @@ CWinEmoticonsDlg::CWinEmoticonsDlg(CWnd* pParent /*=NULL*/)
 
 CWinEmoticonsDlg::~CWinEmoticonsDlg()
 {
-	m_menu.DestroyMenu();
-	::UnregisterHotKey(GetSafeHwnd(), m_nHotKeyId);
 }
 
 void CWinEmoticonsDlg::DoDataExchange(CDataExchange* pDX)
@@ -35,7 +33,6 @@ void CWinEmoticonsDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CWinEmoticonsDlg, CDialog)
 	ON_WM_PAINT()
-	ON_MESSAGE(WM_HOTKEY,OnHotKey)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDOK, &CWinEmoticonsDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
@@ -55,50 +52,12 @@ BOOL CWinEmoticonsDlg::OnInitDialog()
 	m_dlgPopup.Create(CDlgPopup::IDD);
 
 	// 
-	m_nHotKeyId =  ::GlobalAddAtom(_T("WinEmoticonsHotkey")) - 0xC000;
-	while(!::RegisterHotKey(GetSafeHwnd(), m_nHotKeyId, MOD_CONTROL, 'E'))
-	{
-		::UnregisterHotKey(NULL, m_nHotKeyId);
-	}
 	
 
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
-LRESULT CWinEmoticonsDlg::OnHotKey( WPARAM wParam,LPARAM lParam )
-{
-	POINT ptCursor;
-	if(::GetCursorPos(&ptCursor))
-	{
-		m_pForeWnd = GetForegroundWindow();
-
-		DWORD activeWindowThread = ::GetWindowThreadProcessId(m_pForeWnd->GetSafeHwnd(), NULL);
-		DWORD thisWindowThread = ::GetWindowThreadProcessId(GetSafeHwnd(), NULL);
-
-		if(::AttachThreadInput(thisWindowThread, activeWindowThread, TRUE))
-		{
-			m_pFocusedControl = GetFocus();
-			::AttachThreadInput(thisWindowThread, activeWindowThread, FALSE);
-		}
-		
-		// Toggle show popup
-		if (!m_dlgPopup.IsWindowVisible())
-		{
-			CRect rcWindow;
-			m_dlgPopup.GetWindowRect(rcWindow);
-			m_dlgPopup.MoveWindow(ptCursor.x,ptCursor.y,rcWindow.Width(),rcWindow.Height());
-			m_dlgPopup.PopupWindow();
-		}
-		else
-		{
-			m_dlgPopup.HideWindow();
-		}
-		//m_menu.TrackPopupMenu(TPM_LEFTALIGN|TPM_RETURNCMD|TPM_NONOTIFY,ptCursor.x,ptCursor.y,this);
-	}
-	
-	return 0;
-}
 
 void CWinEmoticonsDlg::OnBnClickedOk()
 {
