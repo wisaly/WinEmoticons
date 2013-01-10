@@ -1,4 +1,4 @@
-// TestContainer.cpp : 实现文件
+// TestContainer.cpp
 //
 
 #include "stdafx.h"
@@ -6,7 +6,7 @@
 #include "TestContainer.h"
 
 
-// CTestContainer 对话框
+// CTestContainer
 
 IMPLEMENT_DYNAMIC(CTestContainer, CDialog)
 
@@ -34,7 +34,7 @@ BEGIN_MESSAGE_MAP(CTestContainer, CDialog)
 END_MESSAGE_MAP()
 
 
-// CTestContainer 消息处理程序
+// CTestContainer
 
 BOOL CTestContainer::OnInitDialog()
 {

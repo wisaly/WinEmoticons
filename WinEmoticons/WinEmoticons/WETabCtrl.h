@@ -3,14 +3,14 @@
 #pragma once
 
 
-// CWETabCtrl 对话框
+// CWETabCtrl
 
 class CWETabCtrl : public CWnd,public CWEPaintUint
 {
 	DECLARE_DYNAMIC(CWETabCtrl)
 
 public:
-	CWETabCtrl();   // 标准构造函数
+	CWETabCtrl();
 	virtual ~CWETabCtrl();
 
 	// Attributes:

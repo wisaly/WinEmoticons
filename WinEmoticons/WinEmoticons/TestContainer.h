@@ -3,21 +3,20 @@
 #include "WETabCtrl.h"
 
 
-// CTestContainer 对话框
+// CTestContainer
 
 class CTestContainer : public CDialog
 {
 	DECLARE_DYNAMIC(CTestContainer)
 
 public:
-	CTestContainer(CWnd* pParent = NULL);   // 标准构造函数
+	CTestContainer(CWnd* pParent = NULL);
 	virtual ~CTestContainer();
 
-// 对话框数据
 	enum { IDD = IDD_TESTCONTAINER };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 public:

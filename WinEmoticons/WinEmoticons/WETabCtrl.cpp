@@ -1,4 +1,4 @@
-// WETabCtrl.cpp : 实现文件
+// WETabCtrl.cpp
 //
 
 #include "stdafx.h"
@@ -6,7 +6,7 @@
 #include "WETabCtrl.h"
 
 
-// CWETabCtrl 对话框
+// CWETabCtrl 
 
 IMPLEMENT_DYNAMIC(CWETabCtrl, CWnd)
 
@@ -53,7 +53,7 @@ BEGIN_MESSAGE_MAP(CWETabCtrl, CWnd)
 END_MESSAGE_MAP()
 
 
-// CWETabCtrl 消息处理程序
+// CWETabCtrl
 
 void CWETabCtrl::OnSize(UINT nType, int cx, int cy)
 {

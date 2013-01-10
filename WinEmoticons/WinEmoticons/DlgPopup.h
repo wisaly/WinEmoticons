@@ -2,14 +2,14 @@
 #pragma once
 
 
-// CDlgPopup 对话框
+// CDlgPopup
 
 class CDlgPopup : public CDialog
 {
 	DECLARE_DYNAMIC(CDlgPopup)
 
 public:
-	CDlgPopup(CWnd* pParent = NULL);   // 标准构造函数
+	CDlgPopup(CWnd* pParent = NULL);
 	virtual ~CDlgPopup();
 
 	void PopupWindow();
@@ -22,11 +22,11 @@ public:
 	int m_nHotKeyId;
 	CWnd *m_pForeWnd;
 	CWnd *m_pFocusedControl;
-// 对话框数据
+
 	enum { IDD = IDD_POPUP };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 public:
