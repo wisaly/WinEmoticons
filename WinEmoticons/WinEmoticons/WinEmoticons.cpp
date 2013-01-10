@@ -10,6 +10,7 @@
 #define new DEBUG_NEW
 #endif
 
+#define WE_MUTEX _T("WinEmoticonsApp")
 
 // CWinEmoticonsApp
 
@@ -37,6 +38,16 @@ BOOL CWinEmoticonsApp::InitInstance()
 
 	CWinApp::InitInstance();
 
+	// global mutex
+	m_hApp = ::CreateMutex(NULL,FALSE,WE_MUTEX);
+	if(GetLastError()==ERROR_ALREADY_EXISTS)   
+	{  
+		AfxMessageBox(
+			_T("Application already launched, WinEmoticons can only run once."),
+			MB_OK|MB_ICONERROR);
+		return FALSE;
+	}
+
 	CWinEmoticonsDlg dlg;
 	//CTestContainer dlg;
 	//m_pMainWnd = &dlg;
@@ -47,6 +58,8 @@ BOOL CWinEmoticonsApp::InitInstance()
 	else if (nResponse == IDCANCEL)
 	{
 	}
+
+	CloseHandle(m_hApp);
 
 	return FALSE;
 }
