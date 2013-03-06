@@ -338,6 +338,22 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Config"
+			>
+		</Filter>
+		<Filter
+			Name="TrayIcon"
+			>
+			<File
+				RelativePath=".\Ntray.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Ntray.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

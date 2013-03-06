@@ -1,4 +1,5 @@
 #include "DlgPopup.h"
+#include "Ntray.h"
 // WinEmoticonsDlg.h
 //
 
@@ -21,8 +22,11 @@ public:
 protected:
 	HICON m_hIcon;
 	CDlgPopup m_dlgPopup;
+	CTrayNotifyIcon m_trayIcon;
 
 	virtual BOOL OnInitDialog();
+	void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
+	LRESULT OnTrayNotification( WPARAM wParam, LPARAM lParam );
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();

@@ -100,6 +100,15 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
 END
 
+IDD_CONFIG DIALOGEX 0, 0, 316, 220
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Config"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,205,199,50,14
+    PUSHBUTTON      "取消",IDCANCEL,259,199,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -123,13 +132,13 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "CompanyName", "TODO: <公司名>"
-            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "CompanyName", "wisaly@gmail.com"
+            VALUE "FileDescription", "Emoticons input method for windows."
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "WinEmoticons.exe"
-            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "LegalCopyright", "wisaly@gmail.com, all rights reserved."
             VALUE "OriginalFilename", "WinEmoticons.exe"
-            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductName", "WinEmoticons"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
@@ -163,8 +172,32 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 174
     END
+
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 213
+    END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_TRAY MENU 
+BEGIN
+    POPUP "_TRAY_MENU_"
+    BEGIN
+        MENUITEM "&Config",                     ID__CONFIG
+        MENUITEM "&About",                      ID__ABOUT
+        MENUITEM "E&xit!",                      ID__EXIT
+    END
+END
 
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
