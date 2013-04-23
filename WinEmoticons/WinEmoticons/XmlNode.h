@@ -1,8 +1,8 @@
 #pragma once
 
 
-#import "msxml4.dll"
 #include <memory>
+#import "msxml6.dll"
 
 
 #define SAFE_RELEASE(x)	\
