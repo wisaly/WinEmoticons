@@ -121,6 +121,17 @@ BEGIN
     PUSHBUTTON      "取消(&C)",IDCANCEL,219,203,57,14
 END
 
+IDD_ADDBATCH DIALOGEX 0, 0, 178, 179
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "批量输入"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "批量输入，一行一个:",IDC_STATIC,7,7,164,14
+    EDITTEXT        IDC_EDIT1,7,21,164,131,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
+    DEFPUSHBUTTON   "确定(&O)",IDOK,65,158,50,14
+    PUSHBUTTON      "取消(&C)",IDCANCEL,121,158,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -191,6 +202,14 @@ BEGIN
         RIGHTMARGIN, 276
         TOPMARGIN, 7
         BOTTOMMARGIN, 217
+    END
+
+    IDD_ADDBATCH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 171
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 172
     END
 END
 #endif    // APSTUDIO_INVOKED
