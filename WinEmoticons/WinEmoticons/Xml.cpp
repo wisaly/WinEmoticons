@@ -18,9 +18,9 @@ CXml::~CXml(void)
 
 //-------------------------------------------------------------------------
 // Function Name    :IsFileExist	[static]
-// Parameter(s)     :CString strFilePath	文件路径和名称
+// Parameter(s)     :CString strFilePath	
 // Return           :BOOL
-// Memo             :判断文件是否存在
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXml::IsFileExist(CString strFilePath)
 {
@@ -48,9 +48,9 @@ BOOL CXml::IsFileExist(CString strFilePath)
 
 //-------------------------------------------------------------------------
 // Function Name    :Open
-// Parameter(s)     :CString strXmlFilePath	文件路径和名称
-// Return           :BOOL	是否成功
-// Memo             :打开XML文件 如果不存在则创建之
+// Parameter(s)     :CString strXmlFilePath	
+// Return           :BOOL	
+// Memo             : 
 //-------------------------------------------------------------------------
 BOOL CXml::Open( CString strXmlFilePath )
 {
@@ -59,7 +59,7 @@ BOOL CXml::Open( CString strXmlFilePath )
 	hr = m_pDoc.CreateInstance( __uuidof(MSXML2::DOMDocument40) );
 	if( !SUCCEEDED(hr) )
 	{
-		// 有没有CoInitialize啊？？
+		// CoInitialize?
 		ASSERT(FALSE);
 		return FALSE;
 	}
@@ -104,7 +104,7 @@ BOOL CXml::Create( CString strXmlFilePath )
 	hr = m_pDoc.CreateInstance( __uuidof(MSXML2::DOMDocument40) );
 	if( !SUCCEEDED(hr) )
 	{
-		// 有没有CoInitialize啊？？
+		// CoInitialize?
 		ASSERT(FALSE);
 		return FALSE;
 	}
@@ -128,7 +128,7 @@ BOOL CXml::Create( CString strXmlFilePath )
 // Function Name    :Close
 // Parameter(s)     :void
 // Return           :void
-// Memo             :关闭
+// Memo             :
 //-------------------------------------------------------------------------
 void CXml::Close(void)
 {
@@ -141,7 +141,7 @@ void CXml::Close(void)
 // Function Name    :GetLastError
 // Parameter(s)     :void
 // Return           :CString
-// Memo             :获取最后的出错信息
+// Memo             :
 //-------------------------------------------------------------------------
 CString CXml::GetLastError(void)
 {
@@ -164,7 +164,7 @@ CString CXml::GetLastError(void)
         hr = pIParseError->get_reason(&bstr);
 		ASSERT( SUCCEEDED(hr) );
 
-		strRet = (LPCSTR)(LPCTSTR)_bstr_t( bstr, true);
+		strRet = (LPCTSTR)_bstr_t( bstr, true);
 
 		if( bstr != NULL )
 		{
@@ -184,7 +184,7 @@ CString CXml::GetLastError(void)
 // Function Name    :GetRoot
 // Parameter(s)     :
 // Return           :
-// Memo             :获取根节点
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNodePtr CXml::GetRoot(void)
 {	
@@ -194,7 +194,7 @@ CXmlNodePtr CXml::GetRoot(void)
 	HRESULT hr = m_pDoc->get_documentElement(&pElement);
 	ASSERT( SUCCEEDED(hr) );
 
-	// 不存在 则 创建
+	// 
 	if( pElement == NULL )
 	{
 		pElement = m_pDoc->createElement( _bstr_t(_T("xmlRoot")) );
@@ -212,9 +212,9 @@ CXmlNodePtr CXml::GetRoot(void)
 
 //-------------------------------------------------------------------------
 // Function Name    :Save
-// Parameter(s)     :LPCTSTR lpszFilePath	[in] 保存的位置
+// Parameter(s)     :LPCTSTR lpszFilePath	[in] 
 // Return           :BOOL
-// Memo             :保存Xml文件
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXml::Save(LPCTSTR lpszFilePath /* = NULL */)
 {
@@ -222,7 +222,7 @@ BOOL CXml::Save(LPCTSTR lpszFilePath /* = NULL */)
 
 	HRESULT hr = S_OK;
 	if( lpszFilePath == NULL )
-		hr = m_pDoc->save( _variant_t((char*)(LPCTSTR)m_strFilePath) );
+		hr = m_pDoc->save( _variant_t((TCHAR*)(LPCTSTR)m_strFilePath) );
 	else
 		hr = m_pDoc->save( _variant_t( lpszFilePath ) );
 
@@ -233,9 +233,9 @@ BOOL CXml::Save(LPCTSTR lpszFilePath /* = NULL */)
 
 //-------------------------------------------------------------------------
 // Function Name    :SelectSingleNode
-// Parameter(s)     :LPCTSTR strPath  路径名
+// Parameter(s)     :LPCTSTR strPath  
 // Return           :CXmlNodePtr
-// Memo             :取单个节点
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNodePtr CXml::SelectSingleNode(LPCTSTR lpszPath)
 {
@@ -254,9 +254,9 @@ CXmlNodePtr CXml::SelectSingleNode(LPCTSTR lpszPath)
 
 //-------------------------------------------------------------------------
 // Function Name    :SelectNodes
-// Parameter(s)     :LPCTSTR strPath	路径名
+// Parameter(s)     :LPCTSTR strPath	
 // Return           :CXmlNodesPtr
-// Memo             :取结点集合
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNodesPtr CXml::SelectNodes(LPCTSTR lpszPath)
 {
@@ -278,7 +278,7 @@ CString CXml::GetXmlText()
 
 	_bstr_t bstrXmlText = m_pDoc->Getxml();
 
-	return CString((char *)bstrXmlText);
+	return CString((TCHAR *)bstrXmlText);
 }
 
 BOOL CXml::SetXmlText( LPCTSTR lpszXml )
@@ -286,4 +286,16 @@ BOOL CXml::SetXmlText( LPCTSTR lpszXml )
 	ASSERT( m_pDoc != NULL );
 
 	return m_pDoc->loadXML(_bstr_t(lpszXml)) == VARIANT_TRUE ? TRUE : FALSE;
+}
+
+CString CXml::GetApplicationPath()
+{
+	CString strPath;
+	TCHAR FilePath[_MAX_PATH];
+	DWORD dwSize = GetModuleFileName(NULL,FilePath,_MAX_PATH);
+	strPath = FilePath;
+	strPath.TrimRight('\\');
+	strPath = strPath.Left(strPath.ReverseFind('\\'));//remove tail "\\"
+
+	return strPath;
 }

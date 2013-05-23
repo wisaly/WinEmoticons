@@ -5,6 +5,7 @@
 #include "WinEmoticons.h"
 #include "WinEmoticonsDlg.h"
 #include "TestContainer.h"
+#include "ConfigManager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -48,6 +49,11 @@ BOOL CWinEmoticonsApp::InitInstance()
 		return FALSE;
 	}
 
+    CoInitialize(NULL);
+
+    CConfigManager::Inst()->LoadConfig();
+
+    // construct dialog after loadconfig
 	CWinEmoticonsDlg dlg;
 	//CTestContainer dlg;
 	//m_pMainWnd = &dlg;
@@ -60,6 +66,8 @@ BOOL CWinEmoticonsApp::InitInstance()
 	}
 
 	CloseHandle(m_hApp);
+
+    CoUninitialize();
 
 	return FALSE;
 }

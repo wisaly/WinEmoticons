@@ -8,7 +8,7 @@
 // Function Name    :CXmlNode
 // Parameter(s)     : MSXML2::IXMLDOMNodePtr pNode	[in]
 // Return           :
-// Memo             :构造器
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNode::CXmlNode( MSXML2::IXMLDOMNodePtr pNode IN)
 {
@@ -20,7 +20,7 @@ CXmlNode::CXmlNode( MSXML2::IXMLDOMNodePtr pNode IN)
 // Function Name    :CXmlNode
 // Parameter(s)     :void
 // Return           :
-// Memo             :构造器
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNode::CXmlNode(void)
 {
@@ -32,7 +32,7 @@ CXmlNode::CXmlNode(void)
 // Function Name    :CXmlNode
 // Parameter(s)     :CXmlNode & refNode [in]
 // Return           :
-// Memo             :拷贝构造函数
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNode::CXmlNode( CXmlNode & refNode IN)
 {
@@ -44,7 +44,7 @@ CXmlNode::CXmlNode( CXmlNode & refNode IN)
 // Function Name    :~CXmlNode
 // Parameter(s)     :void
 // Return           :
-// Memo             :析构函数
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNode::~CXmlNode(void)
 {
@@ -59,7 +59,7 @@ CXmlNode::~CXmlNode(void)
 // Function Name    :operator =
 // Parameter(s)     :CXmlNodePtr pNode	[in]
 // Return           :CXmlNodePtr
-// Memo             :重载 = 操作符
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNodePtr CXmlNode::operator = ( CXmlNodePtr pNode IN)
 {
@@ -72,7 +72,7 @@ CXmlNodePtr CXmlNode::operator = ( CXmlNodePtr pNode IN)
 // Function Name    :operator =
 // Parameter(s)     :CXmlNode & refNode	[in]
 // Return           :CXmlNode &
-// Memo             :重载 = 操作符
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNode & CXmlNode::operator = ( CXmlNode & refNode IN)
 {
@@ -85,7 +85,7 @@ CXmlNode & CXmlNode::operator = ( CXmlNode & refNode IN)
 // Function Name    :IsNull
 // Parameter(s)     :
 // Return           :BOOL
-// Memo             :判断此结点是否是空节点
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXmlNode::IsNull(void)
 {
@@ -97,18 +97,18 @@ BOOL CXmlNode::IsNull(void)
 
 //-------------------------------------------------------------------------
 // Function Name    :GetChild
-// Parameter(s)     :CString strName	节点名称
-// Return           :儿子节点指针
-// Memo             :获取儿子
+// Parameter(s)     :CString strName	
+// Return           :
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNodePtr CXmlNode::GetChild(CString strName IN)
 {
 	ASSERT( m_pNode != NULL );
 
 	MSXML2::IXMLDOMNodePtr pChildNode = NULL;
-	pChildNode = m_pNode->selectSingleNode(_bstr_t((char*)(LPCTSTR)strName));
+	pChildNode = m_pNode->selectSingleNode(_bstr_t((TCHAR*)(LPCTSTR)strName));
 	
-	// 不存在 则 创建
+	// 
 	if( pChildNode == NULL )
 	{
 		MSXML2::IXMLDOMDocumentPtr pDoc = NULL;
@@ -161,9 +161,9 @@ CXmlNodePtr CXmlNode::AppendChild( CString strName )
 
 //-------------------------------------------------------------------------
 // Function Name    :_GetValue
-// Parameter(s)     :CString & strValue IN	值
-// Return           :BOOL	是否成功
-// Memo             :获取当前节点的值
+// Parameter(s)     :CString & strValue IN
+// Return           :BOOL	
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXmlNode::_GetValue(CString & strValue OUT)
 {
@@ -171,7 +171,7 @@ BOOL CXmlNode::_GetValue(CString & strValue OUT)
 
 	if( HasChildren() )
 	{
-		// 下面有子结点
+		// 
 		ASSERT( FALSE );
 		return FALSE;
 	}
@@ -179,7 +179,7 @@ BOOL CXmlNode::_GetValue(CString & strValue OUT)
 	BSTR bstr = NULL;
 	HRESULT hr = m_pNode->get_text( &bstr );
 	ASSERT( SUCCEEDED(hr) );	
-	strValue = (LPCSTR)(LPCTSTR)_bstr_t( bstr, true);
+	strValue = (LPCTSTR)_bstr_t( bstr, true);
 
 	if( bstr != NULL )
 	{
@@ -195,8 +195,8 @@ BOOL CXmlNode::_GetValue(CString & strValue OUT)
 //-------------------------------------------------------------------------
 // Function Name    :_SetValue
 // Parameter(s)     :CString & strValue IN
-// Return           :BOOL	是否成功
-// Memo             :获取当前节点的值
+// Return           :BOOL	
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXmlNode:: _SetValue(CString & strValue IN)
 {
@@ -204,7 +204,7 @@ BOOL CXmlNode:: _SetValue(CString & strValue IN)
 
 	if( HasChildren() )
 	{
-		// 下面有子结点 
+		//  
 		ASSERT( FALSE );
 		return FALSE;
 	}
@@ -222,7 +222,7 @@ BOOL CXmlNode:: _SetValue(CString & strValue IN)
 // Function Name    :GetName
 // Parameter(s)     :void
 // Return           :CString
-// Memo             :获取当前节点名称
+// Memo             :
 //-------------------------------------------------------------------------
 CString CXmlNode::GetName(void)
 {
@@ -231,7 +231,7 @@ CString CXmlNode::GetName(void)
 	BSTR bstr = NULL;
 	HRESULT hr = m_pNode->get_nodeName(&bstr);
 	ASSERT( SUCCEEDED(hr) );	
-	CString strRet( (LPCSTR)(LPCTSTR)_bstr_t( bstr, true) );
+	CString strRet( (LPCTSTR)_bstr_t( bstr, true) );
 
 	if( bstr != NULL )
 	{
@@ -249,10 +249,10 @@ CString CXmlNode::GetName(void)
 
 //-------------------------------------------------------------------------
 // Function Name    :GetAttribute
-// Parameter(s)     :CString strName		属性名
-//					:LPCTSTR lpszDefault	默认值
+// Parameter(s)     :CString strName		
+//					:LPCTSTR lpszDefault	
 // Return           :CString
-// Memo             :获取属性值
+// Memo             :
 //-------------------------------------------------------------------------
 CString CXmlNode::GetAttribute( CString strName IN
 							   , LPCTSTR lpszDefault /* = NULL */ IN)
@@ -288,14 +288,14 @@ CString CXmlNode::GetAttribute( CString strName IN
 	return strValue;
 }
 
-DWORD CXmlNode::GetAttribute( CString strName, DWORD dwValue )
+DWORD CXmlNode::GetAttribute( CString strName, int iValue )
 {
 	CString strValue = GetAttribute(strName);
 
 	return _ttol(strValue);
 }
 
-BOOL CXmlNode::GetAttribute( CString strName, BOOL bValue )
+BOOL CXmlNode::GetAttribute( CString strName, bool bValue )
 {
 	CString strValue = GetAttribute(strName);
 
@@ -312,11 +312,33 @@ BOOL CXmlNode::GetAttribute( CString strName, BOOL bValue )
 		return bValue;
 	}
 }
+
+COLORREF CXmlNode::GetAttribute( CString strName,COLORREF crValue )
+{
+	CString strValue = GetAttribute(strName);
+
+    int spos1 = strValue.Find(',');
+    if (spos1 == -1)
+    {
+        return crValue;
+    }
+	int spos2 = strValue.Find(',',spos1 + 1);
+	if (spos2 == -1)
+	{
+		return crValue;
+	}
+
+	CString r = strValue.Left(spos1);
+	CString g = strValue.Mid(spos1 + 1,spos2 - spos1 - 1);
+	CString b = strValue.Right(strValue.GetLength() - spos2 - 1);
+
+	return RGB(_ttoi(r),_ttoi(g),_ttoi(b));
+}
 //-------------------------------------------------------------------------
 // Function Name    :SetAttribute
-// Parameter(s)     :CString strValue	值
+// Parameter(s)     :CString strValue
 // Return           :BOOL
-// Memo             :设置属性值
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXmlNode::SetAttribute( CString strName IN
 							, CString strValue IN)
@@ -334,23 +356,34 @@ BOOL CXmlNode::SetAttribute( CString strName IN
 	return SUCCEEDED(hr);
 }
 
-BOOL CXmlNode::SetAttribute( CString strName IN, DWORD dwValue  IN)
+BOOL CXmlNode::SetAttribute( CString strName IN, int iValue  IN)
 {
 	CString strText;
-	strText.Format(_T("%ld"),dwValue);
+	strText.Format(_T("%d"),iValue);
 
 	return SetAttribute(strName,strText);
 }
 
-BOOL CXmlNode::SetAttribute( CString strName, BOOL bValue )
+BOOL CXmlNode::SetAttribute( CString strName, bool bValue )
 {
-	return SetAttribute(strName,bValue ? _T("TRUE") : _T("FALSE"));
+	return SetAttribute(strName,bValue ? CString(_T("TRUE")) : CString(_T("FALSE")));
+}
+
+BOOL CXmlNode::SetAttribute( CString strName,COLORREF crValue )
+{
+	CString strValue;
+	strValue.Format(_T("%d,%d,%d"),
+		GetRValue(crValue),
+		GetGValue(crValue),
+		GetBValue(crValue));
+	return SetAttribute(strName,strValue);
+		
 }
 //-------------------------------------------------------------------------
 // Function Name    :DelAttribute
-// Parameter(s)     :CString strName IN 属性名称
+// Parameter(s)     :CString strName IN
 // Return           :BOOL
-// Memo             :删除属性
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXmlNode::DelAttribute( CString strName IN )
 {
@@ -376,7 +409,7 @@ BOOL CXmlNode::DelAttribute( CString strName IN )
 // Function Name    :HasChildren
 // Parameter(s)     :
 // Return           :
-// Memo             :是否有子结点
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXmlNode::HasChildren(void)
 {
@@ -418,7 +451,7 @@ BOOL CXmlNode::HasChildren(void)
 // Function Name    :Remove
 // Parameter(s)     :
 // Return           :
-// Memo             :删除此结点
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXmlNode::Remove(void)
 {
@@ -438,7 +471,7 @@ BOOL CXmlNode::Remove(void)
 // Function Name    :RemoveChildren
 // Parameter(s)     :
 // Return           :BOOL
-// Memo             :删除子结点
+// Memo             :
 //-------------------------------------------------------------------------
 BOOL CXmlNode::RemoveChildren(void)
 {
@@ -479,7 +512,7 @@ BOOL CXmlNode::RemoveChildren(void)
 // Function Name    :GetChildren
 // Parameter(s)     :void
 // Return           :CXmlNodesPtr
-// Memo             :获取子结点
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNodesPtr CXmlNode::GetChildren()
 {
@@ -499,7 +532,7 @@ CXmlNodesPtr CXmlNode::GetChildren()
 
 
 //////////////////////////////////////////////////////////////////////////
-// 下列为取值的重载方法
+// 
 
 CString CXmlNode::GetString(LPCTSTR lpszValue /* = NULL */ IN)
 {
@@ -572,7 +605,7 @@ DOUBLE CXmlNode::GetFloat( DOUBLE fDefault /* = 0.0 */)
 
 
 //////////////////////////////////////////////////////////////////////////
-// 下列为赋值的重载方法
+// 
 
 BOOL CXmlNode::SetString( LPCTSTR lpszValue )
 {
@@ -609,7 +642,7 @@ BOOL CXmlNode::HasChild( CString strName )
 {
 	ASSERT( m_pNode != NULL );
 	
-	return m_pNode->selectSingleNode(_bstr_t((char*)(LPCTSTR)strName)) != NULL;
+	return m_pNode->selectSingleNode(_bstr_t((TCHAR*)(LPCTSTR)strName)) != NULL;
 }
 //////////////////////////////////////////////////////////////////////////
 

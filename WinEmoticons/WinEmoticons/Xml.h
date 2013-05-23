@@ -4,10 +4,10 @@
 
 //-------------------------------------------------------------------------
 // Classes Name	    :CXml CXmlNode CXmlNodes
-// Author			:csdn[我就是传说中的。。。。SB]	sky-sea-earth@21cn.com 
+// Author			:original[sky-sea-earth@21cn.com] improve[wisaly@gmail.com]
 // CreateTime       :2005-10-07
-// Memo             :Xml结点类库
-// Version          :v1.0
+// Memo             :Xml lib
+// Version          :v1.1
 //-------------------------------------------------------------------------
 
 
@@ -40,4 +40,5 @@ public:
 
 	CString GetXmlText();					// add by mqm @ 2011.4.7
 	BOOL SetXmlText(LPCTSTR lpszXml);		// add by mqm @ 2011.4.7
+	static CString GetApplicationPath();	// add by mqm @ 2013.4.24
 };

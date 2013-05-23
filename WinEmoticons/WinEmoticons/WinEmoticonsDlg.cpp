@@ -5,6 +5,7 @@
 #include "WinEmoticons.h"
 #include "WinEmoticonsDlg.h"
 #include "DlgPopup.h"
+#include "DlgEditEmoticons.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,10 +32,14 @@ void CWinEmoticonsDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CWinEmoticonsDlg, CDialog)
-	ON_WM_PAINT()
-	ON_MESSAGE(MSG_TRAYNOTIFY, OnTrayNotification)  //自定义系统托盘消息涵数	
-	ON_BN_CLICKED(IDOK, &CWinEmoticonsDlg::OnBnClickedOk)
-	//}}AFX_MSG_MAP
+	ON_WM_PAINT()	
+    ON_BN_CLICKED(IDOK, &CWinEmoticonsDlg::OnBnClickedOk)
+    ON_BN_CLICKED(IDC_BTN_EMOTICONS, &CWinEmoticonsDlg::OnBnEmoticon)
+    //}}AFX_MSG_MAP
+	ON_MESSAGE(MSG_TRAYNOTIFY, OnTrayNotification)  //自定义系统托盘消息涵数
+    ON_COMMAND(ID__EXIT,OnTrayExit)
+    ON_COMMAND(ID__CONFIG,OnTrayConfig)
+    ON_COMMAND(ID__ABOUT,OnTrayAbout)
 END_MESSAGE_MAP()
 
 
@@ -64,7 +69,28 @@ void CWinEmoticonsDlg::OnBnClickedOk()
 	this->ShowWindow(SW_HIDE);
 }
 
+void CWinEmoticonsDlg::OnBnEmoticon()
+{
+    CDlgEditEmoticons dlgEmoticons;
+    dlgEmoticons.DoModal();
+}
+
 LRESULT CWinEmoticonsDlg::OnTrayNotification( WPARAM wParam, LPARAM lParam )
 {
 	return m_trayIcon.OnTrayNotification(wParam, lParam);
+}
+
+void CWinEmoticonsDlg::OnTrayExit()
+{
+    OnOK();
+}
+
+void CWinEmoticonsDlg::OnTrayConfig()
+{
+    this->ShowWindow(this->IsWindowVisible() ? SW_HIDE : SW_SHOW);
+}
+
+void CWinEmoticonsDlg::OnTrayAbout()
+{
+    
 }

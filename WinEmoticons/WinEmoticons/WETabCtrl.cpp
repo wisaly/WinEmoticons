@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "WinEmoticons.h"
 #include "WETabCtrl.h"
+#include "ConfigManager.h"
 
 
 // CWETabCtrl 
@@ -13,26 +14,46 @@ IMPLEMENT_DYNAMIC(CWETabCtrl, CWnd)
 CWETabCtrl::CWETabCtrl()
 : CWEPaintUint()
 {
-	m_nCtrlPadding = 5;
-	m_nPageCount = 0;
-	m_nHeaderHeight = 40;	
-	m_nHeaderHorzMargin = 5;
-	m_nHeaderTopMargin = 5;
-	m_nHeaderActiveHorzMargin = 5;
-	m_nHeaderActiveTopMargin = 0;
-	m_nPagePadding = 2;
-	m_nFontSize = 100;
-	m_strFontName = _T("Î¢ÈíÑÅºÚ");
-	m_nColumnCount = 3;
-	m_nRowCount = 5;
-	m_nItemPadding = 5;
+// 	m_nCtrlPadding = 5;
+// 	m_nPageCount = 0;
+// 	m_nHeaderHeight = 40;	
+// 	m_nHeaderHorzMargin = 5;
+// 	m_nHeaderTopMargin = 5;
+// 	m_nHeaderActiveHorzMargin = 5;
+// 	m_nHeaderActiveTopMargin = 0;
+// 	m_nPagePadding = 2;
+// 	m_nItemPadding = 5;
+// 	m_nFontSize = 100;
+// 	m_strFontName = _T("Î¢ÈíÑÅºÚ");
+// 	m_nColumnCount = 3;
+// 	m_nRowCount = 5;
+// 
+// 	m_lstPageBackgrounds.AddTail(RGB(44,143,197));
+// 	m_lstPageBackgrounds.AddTail(RGB(216,80,83));
+// 	m_lstPageBackgrounds.AddTail(RGB(253,105,43));
+// 	m_lstPageBackgrounds.AddTail(RGB(152,248,192));
+// 	m_lstPageBackgrounds.AddTail(RGB(223,141,235));
 
-	m_lstPageBackgrounds.AddTail(RGB(44,143,197));
-	m_lstPageBackgrounds.AddTail(RGB(216,80,83));
-	m_lstPageBackgrounds.AddTail(RGB(253,105,43));
-	m_lstPageBackgrounds.AddTail(RGB(152,248,192));
-	m_lstPageBackgrounds.AddTail(RGB(223,141,235));
+    m_nCtrlPadding = CConfigManager::Inst()->PopWindow.CtrlPadding;
+    m_nHeaderHeight = CConfigManager::Inst()->PopWindow.PageHeader.HeaderHeight;	
+    m_nHeaderHorzMargin = CConfigManager::Inst()->PopWindow.PageHeader.HeaderHorzMargin;
+    m_nHeaderTopMargin = CConfigManager::Inst()->PopWindow.PageHeader.HeaderTopMargin;
+    m_nHeaderActiveHorzMargin = CConfigManager::Inst()->PopWindow.PageHeader.HeaderActiveHorzMargin;
+    m_nHeaderActiveTopMargin = CConfigManager::Inst()->PopWindow.PageHeader.HeaderActiveTopMargin;
+    m_nPagePadding = CConfigManager::Inst()->PopWindow.PageHeader.PagePadding;
+    m_nItemPadding = CConfigManager::Inst()->PopWindow.PageItem.ItemPadding;
+    m_nFontSize = CConfigManager::Inst()->PopWindow.FontSize;
+    m_strFontName = CConfigManager::Inst()->PopWindow.FontName;
+    m_nColumnCount = CConfigManager::Inst()->PopWindow.PageItem.ColumnCount;
+    m_nRowCount = CConfigManager::Inst()->PopWindow.PageItem.RowCount;
 
+    for (POSITION pos = CConfigManager::Inst()->PopWindow.Pages.Colors.GetHeadPosition();
+        pos != NULL;)
+    {
+        m_lstPageBackgrounds.AddTail(CConfigManager::Inst()->PopWindow.Pages.Colors.GetNext(pos));
+    }
+    
+    m_nPageCount = 0;
 	m_bCaptured = FALSE;
 	m_pActivePage = NULL;
 }

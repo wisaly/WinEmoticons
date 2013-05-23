@@ -92,6 +92,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy /b /y $(SolutionDir)WEConfig.xml $(TargetDir)WEConfig.xml"
 			/>
 		</Configuration>
 		<Configuration
@@ -174,6 +175,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy /b /y $(SolutionDir)WEConfig.xml $(TargetDir)WEConfig.xml"
 			/>
 		</Configuration>
 	</Configurations>
@@ -187,6 +189,10 @@
 			>
 			<File
 				RelativePath=".\DlgPopup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MsgBox.cpp"
 				>
 			</File>
 			<File
@@ -229,6 +235,10 @@
 			>
 			<File
 				RelativePath=".\DlgPopup.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MsgBox.h"
 				>
 			</File>
 			<File
@@ -341,6 +351,35 @@
 		<Filter
 			Name="Config"
 			>
+			<File
+				RelativePath=".\ConfigManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ConfigManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DlgEditEmoticons.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DlgEditEmoticons.h"
+				>
+			</File>
+			<File
+				RelativePath="..\WEConfig.xml"
+				DeploymentContent="true"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<Filter
 			Name="TrayIcon"

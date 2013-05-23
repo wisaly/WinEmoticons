@@ -48,40 +48,42 @@ protected:
 public:
 
 	//		_________________
-	//______|	构造函数	|___________________________________________________________________
+	//______|	Constructor  |___________________________________________________________________
 	CXmlNode(void);
 	CXmlNode( CXmlNode & refNode IN);
 
 
 	//		_________________
-	//______|	重载 = 号	|___________________________________________________________________
+	//______|	operator =	|___________________________________________________________________
 	CXmlNodePtr operator = ( CXmlNodePtr pNode);
 	CXmlNode & operator = ( CXmlNode & refNode);
 
 
 
 	//		_________________
-	//______|  获取结点名称	|___________________________________________________________________
+	//______|  Node Name     |___________________________________________________________________
 	CString GetName(void);
 	
 
 
 	//		_________________
-	//______|	属性操作	|___________________________________________________________________
+	//______|	Attributes   |___________________________________________________________________
 	CString GetAttribute( CString strName, LPCTSTR lpszDefault = NULL);
-	DWORD GetAttribute( CString strName, DWORD dwValue);		// add by mqm @ 2011.3.25
-	BOOL GetAttribute( CString strName, BOOL bValue);			// add by mqm @ 2011.3.25
+	DWORD GetAttribute( CString strName, int iValue);			// add by mqm @ 2011.3.25
+	BOOL GetAttribute( CString strName, bool bValue);			// add by mqm @ 2011.3.25
+	COLORREF GetAttribute( CString strName,COLORREF crValue);	// add by mqm @ 2013.4.24
 
 	BOOL SetAttribute(  CString strName, CString strValue);
-	BOOL SetAttribute(  CString strName, DWORD dwValue);		// add by mqm @ 2011.3.25
-	BOOL SetAttribute(  CString strName, BOOL bValue);			// add by mqm @ 2011.3.25
+	BOOL SetAttribute(  CString strName, int iValue);			// add by mqm @ 2011.3.25
+	BOOL SetAttribute(  CString strName, bool bValue);			// add by mqm @ 2011.3.25
+	BOOL SetAttribute( CString strName,COLORREF crValue);		// add by mqm @ 2013.4.24
 
 	BOOL DelAttribute( CString strName );
 
 
 
 	//		_________________
-	//______|	子结点操作	|___________________________________________________________________
+	//______|	Child nodes  |___________________________________________________________________
 	CXmlNodePtr GetChild(CString strName);
 	CXmlNodesPtr GetChildren();
 	BOOL HasChildren(void);
@@ -91,13 +93,13 @@ public:
 	BOOL HasChild(CString strName);				// add by mqm @ 2011.7.14
 
 	//		_________________
-	//______|	删除结点	|___________________________________________________________________
+	//______|	Remove Node  |___________________________________________________________________
 	BOOL Remove(void);
 	
 
 
 	//		_________________
-	//______|	取值操作	|___________________________________________________________________	
+	//______|	Get value    |___________________________________________________________________	
 	CString GetString( LPCTSTR lpszDefault = NULL );
 	BOOL GetBOOL( BOOL bDefault = FALSE );
 	INT GetInt( INT nDefault = 0 );
@@ -106,7 +108,7 @@ public:
 
 
 	//		_________________
-	//______|	赋值操作	|___________________________________________________________________
+	//______|	Set value    |___________________________________________________________________
 	BOOL SetString( LPCTSTR lpszValue );
 	BOOL SetBOOL( BOOL bValue );
 	BOOL SetInt( INT nValue );

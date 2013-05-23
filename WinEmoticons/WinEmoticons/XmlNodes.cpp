@@ -31,7 +31,7 @@ CXmlNodes::~CXmlNodes(void)
 // Function Name    :operator =
 // Parameter(s)     :CXmlNodesPtr pNodes
 // Return           :CXmlNodesPtr
-// Memo             :重载 = 号
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNodesPtr CXmlNodes::operator = ( CXmlNodesPtr pNodes IN )
 {
@@ -46,7 +46,7 @@ CXmlNodesPtr CXmlNodes::operator = ( CXmlNodesPtr pNodes IN )
 // Function Name    :operator =
 // Parameter(s)     :CXmlNodes & refNodes
 // Return           :CXmlNodes &
-// Memo             :重载 = 号
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNodes & CXmlNodes::operator = (CXmlNodes & refNodes)
 {
@@ -62,7 +62,7 @@ CXmlNodes & CXmlNodes::operator = (CXmlNodes & refNodes)
 // Function Name    :GetCount
 // Parameter(s)     :void
 // Return           :LONG
-// Memo             :获取数量
+// Memo             :
 //-------------------------------------------------------------------------
 LONG CXmlNodes::GetCount(void)
 {
@@ -95,9 +95,9 @@ LONG CXmlNodes::GetCount(void)
 
 //-------------------------------------------------------------------------
 // Function Name    :GetItem
-// Parameter(s)     :LONG nIndex	索引
+// Parameter(s)     :LONG nIndex	
 // Return           :CXmlNodePtr
-// Memo             :获取集合中的结点
+// Memo             :
 //-------------------------------------------------------------------------
 CXmlNodePtr CXmlNodes::GetItem( LONG nIndex )
 {
@@ -141,7 +141,7 @@ CXmlNodePtr CXmlNodes::GetItem( LONG nIndex )
 // Function Name    :operator[]
 // Parameter(s)     :INT nIndex
 // Return           :CXmlNodePtr
-// Memo             :作用同 GetItem( LONG nIndex )
+// Memo             : GetItem( LONG nIndex )
 //-------------------------------------------------------------------------
 CXmlNodePtr CXmlNodes::operator[] ( LONG lIndex )
 {
@@ -167,14 +167,14 @@ CXmlNodePtr CXmlNodes::GetItem( LPCTSTR lpszName )
 		hr = pItem->get_nodeName(&bstr);
 		ASSERT( SUCCEEDED(hr) );
 
-		strName = (LPCSTR)(LPCTSTR)_bstr_t( bstr, true);
+		strName = (LPCTSTR)_bstr_t( bstr, true);
 		if( bstr != NULL )
 		{
 			SysFreeString(bstr);
 			bstr = NULL;
 		}
 
-		// 查找第一个相等的
+		// 
 		if( strName.Compare(lpszName) == 0 )
 		{
 			pNode->m_pNode = pItem;

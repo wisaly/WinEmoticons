@@ -30,4 +30,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
+    afx_msg void OnBnEmoticon();
+    afx_msg void OnTrayExit();
+    afx_msg void OnTrayConfig();
+    afx_msg void OnTrayAbout();
 };
