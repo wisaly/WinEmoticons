@@ -92,6 +92,17 @@ POSITION CDlgEditEmoticons::getGroupPos(int nIndex)
 	return posCur;
 }
 
+POSITION CDlgEditEmoticons::getEmoPos( int nIndex,CConfigManager::_tag_emoticons::_tag_page &curPage )
+{
+	POSITION posEmo = curPage.Items.GetHeadPosition();
+	for (int i = 0;i < nIndex;i ++)
+	{
+		curPage.Items.GetNext(posEmo);
+	}
+
+	return posEmo;
+}
+
 void CDlgEditEmoticons::addGroup( CString strName )
 {
 	m_tabGroup.InsertItem(m_tabGroup.GetCurSel() + 1,strName);
@@ -287,5 +298,20 @@ void CDlgEditEmoticons::OnBnClickedAddemo()
 
 void CDlgEditEmoticons::OnBnClickedDelemo()
 {
+	if(MessageBox(_T("确认删除？"),_T("提示"),MB_OKCANCEL|MB_ICONQUESTION) == IDCANCEL)
+	{
+		return ;
+	}
+
+	int nCur = m_tabGroup.GetCurSel();
+
+	POSITION pos = getGroupPos(nCur);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+
+	int nCurEmo = m_lbxEmos.GetCurSel();
+	
+	POSITION pos = getEmoPos(nCur);
+	m_lbxEmos.DeleteString(nCur);
+	
 	
 }

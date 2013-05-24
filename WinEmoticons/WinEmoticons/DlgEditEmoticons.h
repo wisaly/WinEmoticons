@@ -34,6 +34,7 @@ protected:
 	void addGroup(CString strName);
 	void delGroup(int nCur);
 	void addEmo(CString strEmo);
+	POSITION getEmoPos(int nIndex,,CConfigManager::_tag_emoticons::_tag_page &curPage);
 
     void OnBtnAddGroup();
     void OnBtnDelGroup();
@@ -58,4 +59,5 @@ public:
 	afx_msg void OnBnClickedRightgroup();
 	afx_msg void OnBnClickedAddemo();
 	afx_msg void OnTcnSelchangeTabGroup(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedDelemo();
 };
