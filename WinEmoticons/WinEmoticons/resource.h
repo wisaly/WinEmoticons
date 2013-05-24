@@ -9,8 +9,8 @@
 #define IDD_TESTCONTAINER               131
 #define IDD_EDIT_EMOTICONS              132
 #define IDR_MENU_TRAY                   133
-#define IDD_DIALOG2                     134
 #define IDD_ADDBATCH                    134
+#define IDD_ADDONE                      135
 #define IDC_BUTTON1                     1002
 #define IDC_BTN_EMOTICONS               1002
 #define IDC_ADDGROUP                    1002
@@ -22,8 +22,16 @@
 #define IDC_LIST_EMOS                   1006
 #define IDC_TAB_GROUP                   1007
 #define IDC_DELEMO                      1008
-#define IDC_EDIT1                       1008
+#define IDC_CONTENT                     1008
 #define IDC_MODEMO                      1009
+#define IDC_EINPUT                      1009
+#define IDC_ROW                         1010
+#define IDC_COL                         1012
+#define IDC_LEFTGROUP                   1015
+#define IDC_RIGHTGROUP                  1016
+#define IDC_LEFTEMO                     1017
+#define IDC_RIGHTGROUP2                 1018
+#define IDC_RIGHTEMO                    1018
 #define ID__CONFIG                      32771
 #define ID__ABOUT                       32772
 #define ID__EXIT                        32773
@@ -32,9 +40,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        135
+#define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32774
-#define _APS_NEXT_CONTROL_VALUE         1009
+#define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

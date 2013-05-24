@@ -1,4 +1,6 @@
 #pragma once
+#include "afxwin.h"
+#include "ConfigManager.h"
 
 
 // CDlgEditEmoticons
@@ -19,8 +21,19 @@ protected:
     CListBox m_lbxEmos;
     CButton m_btnAddEmo;
     CButton m_btnDelEmo;
-    CButton m_btnModEmo;
-    void showEmoCtrlsVisible(BOOL bVisble);
+	CButton m_btnModEmo;
+	CButton m_btnLeftEmo;
+	CButton m_btnRightEmo;
+	CButton m_btnDelGroup;
+	CButton m_btnRenGroup;
+	CButton m_btnLeftGroup;
+	CButton m_btnRightGroup;
+	CConfigManager::_tag_emoticons m_emotions;
+	void showEmoCtrlsVisible(BOOL bVisble);
+	POSITION getGroupPos(int nIndex);
+	void addGroup(CString strName);
+	void delGroup(int nCur);
+	void addEmo(CString strEmo);
 
     void OnBtnAddGroup();
     void OnBtnDelGroup();
@@ -34,4 +47,15 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CEdit m_editRow;
+	CEdit m_editCol;
+	afx_msg void OnBnClickedAddgroup();
+	afx_msg void OnBnClickedDelgroup();
+
+	afx_msg void OnBnClickedModgroup();
+	afx_msg void OnBnClickedLeftgroup();
+	afx_msg void OnBnClickedRightgroup();
+	afx_msg void OnBnClickedAddemo();
+	afx_msg void OnTcnSelchangeTabGroup(NMHDR *pNMHDR, LRESULT *pResult);
 };
