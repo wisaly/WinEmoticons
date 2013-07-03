@@ -85,6 +85,8 @@ BOOL CConfigManager::LoadConfig()
 	this->PopWindow.CtrlPadding = pPopWindow->GetAttribute(_T("CtrlPadding"),int(0));
 	this->PopWindow.FontSize = pPopWindow->GetAttribute(_T("FontSize"),int(0));
 	this->PopWindow.FontName = pPopWindow->GetAttribute(_T("FontName"));
+	this->PopWindow.Width = pPopWindow->GetAttribute(_T("Width"),int(100));
+	this->PopWindow.Height = pPopWindow->GetAttribute(_T("Height"),int(50));
 
 	// PopWindow.PageHeader
 	CXmlNodePtr pPageHeader = pPopWindow->GetChild(_T("PageHeader"));
@@ -139,7 +141,7 @@ BOOL CConfigManager::LoadConfig()
 BOOL CConfigManager::SaveConfig()
 {
 	CXml xml;
-	if (xml.Open(configFilePath))
+	if (!xml.Open(configFilePath))
 	{
 		if (xml.Create(configFilePath))
 		{
@@ -165,6 +167,9 @@ BOOL CConfigManager::SaveConfig()
 	pPopWindow->SetAttribute(_T("CtrlPadding"),this->PopWindow.CtrlPadding);
 	pPopWindow->SetAttribute(_T("FontSize"),this->PopWindow.FontSize);
 	pPopWindow->SetAttribute(_T("FontName"),this->PopWindow.FontName);
+	pPopWindow->SetAttribute(_T("Width"),this->PopWindow.Width);
+	pPopWindow->SetAttribute(_T("Height"),this->PopWindow.Height);
+	
 
 	// PopWindow.PageHeader
 	CXmlNodePtr pPageHeader = pPopWindow->AppendChild(_T("PageHeader"));
@@ -210,7 +215,7 @@ BOOL CConfigManager::SaveConfig()
 		}
 	}
 
-	return TRUE;
+	return xml.Save();
 }
 
 BOOL CConfigManager::ParseCombineKeys( CString strComKeys,UINT &nModifier,UINT &nVKey )

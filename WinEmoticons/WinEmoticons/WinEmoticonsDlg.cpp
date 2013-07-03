@@ -50,7 +50,7 @@ BOOL CWinEmoticonsDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-	m_dlgPopup.Create(CDlgPopup::IDD);
+	m_dlgPopup.Create();
 
 	// 
 	m_trayIcon.Create(this, IDR_MENU_TRAY, _T("WinEmotions"), 

@@ -4,20 +4,22 @@ class CConfigManager
 {
 public:
 	CString configFilePath;
-	struct  
+	struct _tag_configwindow_
 	{
 		BOOL PopAtStart;
 	}ConfigWindow;
-	struct
+	struct _tag_acceratekey_
 	{
 		CString PopSelect;
 	}AccerateKey;
-	struct
+	struct _tag_popwindow_
 	{
 		int CtrlPadding;
 		int FontSize;
 		CString FontName;
-		struct
+		int Width;
+		int Height;
+		struct _tag_pageheader_
 		{
 			int HeaderHeight;
 			int HeaderHorzMargin;

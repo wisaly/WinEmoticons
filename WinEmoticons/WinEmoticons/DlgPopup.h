@@ -4,7 +4,7 @@
 
 // CDlgPopup
 
-class CDlgPopup : public CDialog
+class CDlgPopup : public CWnd
 {
 	DECLARE_DYNAMIC(CDlgPopup)
 
@@ -12,6 +12,7 @@ public:
 	CDlgPopup(CWnd* pParent = NULL);
 	virtual ~CDlgPopup();
 
+	void Create();
 	void PopupWindow();
 	void HideWindow();
 
@@ -25,10 +26,9 @@ public:
 	CWnd *m_pForeWnd;
 	CWnd *m_pFocusedControl;
 
-	enum { IDD = IDD_POPUP };
-
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
+	HWND m_hwndParent;
+	//virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 public:

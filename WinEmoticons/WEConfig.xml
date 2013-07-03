@@ -3,7 +3,8 @@
   <ConfigWindow PopAtStart="true"/>
   <AccerateKey PopSelect="Ctrl+E"/>
   <PopWindow CtrlPadding="5"  
-             FontSize="100" FontName="微软雅黑">
+             FontSize="100" FontName="微软雅黑"
+             Width="300" Height="400">
     <PageHeader HeaderHeight="40"
              HeaderHorzMargin="5" HeaderTopMargin="5"
              HeaderActiveHorzMargin="5" HeaderActiveTopMargin="0"
