@@ -77,6 +77,28 @@ BOOL CDlgEditEmoticons::OnInitDialog()
 
     showEmoCtrlsVisible(FALSE);
 
+	// load data from config
+	for (POSITION posPage = CConfigManager::Inst()->Emoticons.Pages.GetHeadPosition();
+		posPage != NULL;)
+	{
+		CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetNext(posPage);
+
+		addGroup(curPage.Caption);
+		
+		for (POSITION posItem = curPage.Items.GetHeadPosition();
+			posItem != NULL;)
+		{
+			CConfigManager::_tag_emoticons::_tag_page::_tag_item item = curPage.Items.GetNext(posItem);
+
+			addEmo(item.Content);
+		}
+	}
+
+	if (m_emotions.Pages.GetCount() > 0)
+	{
+		showEmoCtrlsVisible(TRUE);
+	}
+
     return TRUE;
 }
 
@@ -113,13 +135,14 @@ POSITION CDlgEditEmoticons::getEmoPos( int nIndex,CConfigManager::_tag_emoticons
 // add a group, both data and interface
 void CDlgEditEmoticons::addGroup( CString strName )
 {
-	m_lbxGroup.InsertString(m_lbxGroup.GetCurSel() + 1,strName);
-	// select new item
-	m_lbxGroup.SetCurSel(m_lbxGroup.GetCurSel() + 1);
-
 	CConfigManager::_tag_emoticons::_tag_page apage;
 	apage.Caption = strName;
 	m_emotions.Pages.AddTail(apage);
+
+	m_lbxGroup.InsertString(m_lbxGroup.GetCurSel() + 1,strName);
+	// select new item
+	m_lbxGroup.SetCurSel(m_lbxGroup.GetCurSel() + 1);
+	OnLbnSelchangeListGroup();
 }
 
 // button add group
@@ -162,6 +185,7 @@ void CDlgEditEmoticons::OnBnClickedDelgroup()
 	m_lbxGroup.DeleteString(nCur);
 	// if deleted item is last item, select last item, else select next item
 	m_lbxGroup.SetCurSel(nCur >= m_lbxGroup.GetCount() ? m_lbxGroup.GetCount() - 1 : nCur);
+	OnLbnSelchangeListGroup();
 
 	// delete last item, hide control
 	if(m_lbxGroup.GetCount() == 0)
@@ -193,6 +217,7 @@ void CDlgEditEmoticons::OnBnClickedModgroup()
 		m_lbxGroup.InsertString(nCur,dlg.input);
 
 		m_lbxGroup.SetCurSel(nCur);
+		OnLbnSelchangeListGroup();
 	}
 }
 
@@ -222,6 +247,7 @@ void CDlgEditEmoticons::OnBnClickedLeftgroup()
 	m_lbxGroup.InsertString(nCur - 1,curPage.Caption);
 
 	m_lbxGroup.SetCurSel(nCur - 1);
+	OnLbnSelchangeListGroup();
 }
 
 // button move right
@@ -250,6 +276,7 @@ void CDlgEditEmoticons::OnBnClickedRightgroup()
 	m_lbxGroup.InsertString(nCur + 1,curPage.Caption);
 
 	m_lbxGroup.SetCurSel(nCur + 1);
+	OnLbnSelchangeListGroup();
 }
 
 // list box select change
@@ -257,6 +284,11 @@ void CDlgEditEmoticons::OnLbnSelchangeListGroup()
 {
 	// 
 	int nCur = m_lbxGroup.GetCurSel();
+	if (nCur < 0)
+	{
+		return ;
+	}
+
 	POSITION posGroup = getGroupPos(nCur);
 
 	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(posGroup);
