@@ -6,6 +6,7 @@
 #include "DlgEditEmoticons.h"
 #include "DlgAddBatch.h"
 #include "DlgAddOne.h"
+#include "DlgEmoticonFile.h"
 
 
 // CDlgEditEmoticons 
@@ -53,6 +54,8 @@ BEGIN_MESSAGE_MAP(CDlgEditEmoticons, CDialog)
 	ON_BN_CLICKED(IDC_MODEMO, &CDlgEditEmoticons::OnBnClickedModemo)
 	ON_BN_CLICKED(IDC_LEFTEMO, &CDlgEditEmoticons::OnBnClickedLeftemo)
 	ON_BN_CLICKED(IDC_RIGHTEMO, &CDlgEditEmoticons::OnBnClickedRightemo)
+	ON_BN_CLICKED(IDC_EXPORT, &CDlgEditEmoticons::OnBnClickedExport)
+	ON_BN_CLICKED(IDC_IMPORT, &CDlgEditEmoticons::OnBnClickedImport)
 END_MESSAGE_MAP()
 
 
@@ -74,6 +77,12 @@ void CDlgEditEmoticons::showEmoCtrlsVisible( BOOL bVisble )
 BOOL CDlgEditEmoticons::OnInitDialog()
 {
     CDialog::OnInitDialog();
+
+	m_font.CreatePointFont(
+		CConfigManager::Inst()->PopWindow.FontSize,
+		CConfigManager::Inst()->PopWindow.FontName);
+	m_lbxGroup.SetFont(&m_font);
+	m_lbxEmos.SetFont(&m_font);
 
     showEmoCtrlsVisible(FALSE);
 
@@ -467,4 +476,16 @@ void CDlgEditEmoticons::OnBnClickedRightemo()
 	m_lbxEmos.InsertString(nCur + 1,curItem.Content);
 
 	m_lbxEmos.SetCurSel(nCur + 1);
+}
+
+void CDlgEditEmoticons::OnBnClickedExport()
+{
+	CDlgEmoticonFile dlg(this,TRUE,m_emotions);
+	dlg.DoModal();
+}
+
+void CDlgEditEmoticons::OnBnClickedImport()
+{
+	CDlgEmoticonFile dlg(this,FALSE,m_emotions);
+	dlg.DoModal();
 }

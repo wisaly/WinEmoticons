@@ -6,7 +6,8 @@ private:
 	CConfigManager();
 public:	
 	static CConfigManager *Inst();
-    static BOOL ParseCombineKeys(CString strComKeys,UINT &nModifier,UINT &nVKey);
+	static BOOL ParseCombineKeys(CString strComKeys,UINT &nModifier,UINT &nVKey);
+	static CString Version();
 private:
     static CString translateVKey( int nVKey,CString strNullString = _T("") );
     static int translateVKey( CString strKey );
@@ -81,4 +82,8 @@ public:
 		};
 		CList<_tag_page,_tag_page&> Pages;
 	}Emoticons;
+
+public:
+	static BOOL ExportEmoticons(_tag_emoticons &emoticons,CString &strFilePath,CString &strAuthor,CString &strTitle);
+	static BOOL ImportEmoticons(_tag_emoticons &emoticons,CString &strFilePath,CString &strAuthor,CString &strTitle);
 };

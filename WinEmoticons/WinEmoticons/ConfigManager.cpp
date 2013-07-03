@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ConfigManager.h"
 #include "Xml.h"
+#include "StdioFileEx.h"
 
 CConfigManager * CConfigManager::Inst()
 {
@@ -11,6 +12,51 @@ CConfigManager * CConfigManager::Inst()
 CConfigManager::CConfigManager()
 {
 	configFilePath = CXml::GetApplicationPath() + _T("\\WEConfig.xml");
+}
+
+#pragma comment(lib,"version.lib")
+CString CConfigManager::Version()
+{
+	TCHAR szFullPath[MAX_PATH];
+    DWORD dwVerInfoSize = 0;
+    DWORD dwVerHnd;
+    VS_FIXEDFILEINFO * pFileInfo;
+   
+    GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));
+    dwVerInfoSize = GetFileVersionInfoSize(szFullPath, &dwVerHnd);
+    if (dwVerInfoSize)
+    {
+        // If we were able to get the information, process it:
+        HANDLE  hMem;
+        LPVOID  lpvMem;
+        unsigned int uInfoSize = 0;
+       
+        hMem = GlobalAlloc(GMEM_MOVEABLE, dwVerInfoSize);
+        lpvMem = GlobalLock(hMem);
+        GetFileVersionInfo(szFullPath, dwVerHnd, dwVerInfoSize, lpvMem);
+       
+        ::VerQueryValue(lpvMem, (LPCTSTR)_T("\\"), (void**)&pFileInfo, &uInfoSize);
+       
+        int ret = GetLastError();
+        WORD nProdVersion[4];
+       
+        // Product version from the FILEVERSION of the version info resource
+        nProdVersion[0] = HIWORD(pFileInfo->dwProductVersionMS);
+        nProdVersion[1] = LOWORD(pFileInfo->dwProductVersionMS);
+        nProdVersion[2] = HIWORD(pFileInfo->dwProductVersionLS);
+        nProdVersion[3] = LOWORD(pFileInfo->dwProductVersionLS);
+       
+        CString strVersion ;
+        strVersion.Format(_T("Ver.%d.%d.%d.%d"),
+			nProdVersion[0],nProdVersion[1],
+			nProdVersion[2],nProdVersion[3]);
+       
+        GlobalUnlock(hMem);
+        GlobalFree(hMem);
+       
+        return strVersion;
+    }
+	return _T("-");
 }
 
 BOOL CConfigManager::LoadConfig()
@@ -487,4 +533,67 @@ int CConfigManager::translateVKey( CString strKey )
     }
 
     return 0;
+}
+
+
+#define EXPORT_SEP_LINE _T("==================================================")
+#define EXPORT_TITLE _T("WinEmoticons Dictionary File")
+#define WriteLine(x) WriteString((x) + CString(sNEWLINE))
+
+BOOL CConfigManager::ExportEmoticons( _tag_emoticons &emoticons,CString &strFilePath,CString &strAuthor,CString &strTitle )
+{
+	CStdioFileEx file;
+
+	if (!file.Open(strFilePath,CFile::modeCreate| CFile::modeWrite | CFile::typeText | CStdioFileEx::modeWriteUnicode))
+	{
+		return FALSE;
+	}
+
+	CTime tmNow = CTime::GetCurrentTime();
+	CString strTime;
+	strTime.Format(_T("%04d-%02d-%02d %02d:%02d:%02d"),
+		tmNow.GetYear(),tmNow.GetMonth(),tmNow.GetDay(),
+		tmNow.GetHour(),tmNow.GetMinute(),tmNow.GetSecond());
+
+	// write header
+	file.WriteLine(EXPORT_SEP_LINE);
+	file.WriteLine(EXPORT_TITLE);
+	file.WriteLine(CConfigManager::Version());
+	file.WriteLine(strTime);
+	file.WriteLine(EXPORT_SEP_LINE);
+	
+	// write author,title
+	file.WriteLine(strAuthor);
+	file.WriteLine(strTitle);
+	file.WriteLine(EXPORT_SEP_LINE);
+
+	for (POSITION posPage = emoticons.Pages.GetHeadPosition();
+		posPage != NULL;)
+	{
+		CConfigManager::_tag_emoticons::_tag_page &curPage = emoticons.Pages.GetNext(posPage);
+
+		// write group
+		file.WriteLine(curPage.Caption);
+
+		for (POSITION posItem = curPage.Items.GetHeadPosition();
+			posItem != NULL;)
+		{
+			CConfigManager::_tag_emoticons::_tag_page::_tag_item item = curPage.Items.GetNext(posItem);
+
+			// write item
+			file.WriteLine(item.Content);
+		}
+
+		file.WriteLine(EXPORT_SEP_LINE);
+	}
+
+	file.Close();
+
+	return TRUE;
+}
+#undef WriteLine
+
+BOOL CConfigManager::ImportEmoticons( _tag_emoticons &emoticons,CString &strFilePath,CString &strAuthor,CString &strTitle )
+{
+	return TRUE;
 }

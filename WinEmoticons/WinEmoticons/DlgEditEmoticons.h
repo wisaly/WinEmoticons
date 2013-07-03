@@ -17,6 +17,7 @@ public:
 	enum { IDD = IDD_EDIT_EMOTICONS };
 
 protected:
+	CFont m_font;
     CListBox m_lbxGroup;
     CListBox m_lbxEmos;
     CButton m_btnAddEmo;
@@ -54,4 +55,6 @@ public:
 	afx_msg void OnBnClickedModemo();
 	afx_msg void OnBnClickedLeftemo();
 	afx_msg void OnBnClickedRightemo();
+	afx_msg void OnBnClickedExport();
+	afx_msg void OnBnClickedImport();
 };

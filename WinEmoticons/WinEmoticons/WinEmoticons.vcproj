@@ -196,6 +196,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DlgEmoticonFile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DlgPopup.cpp"
 				>
 			</File>
@@ -247,6 +251,10 @@
 			</File>
 			<File
 				RelativePath=".\DlgAddOne.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DlgEmoticonFile.h"
 				>
 			</File>
 			<File
@@ -381,6 +389,14 @@
 			</File>
 			<File
 				RelativePath=".\DlgEditEmoticons.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StdioFileEx.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StdioFileEx.h"
 				>
 			</File>
 			<File
