@@ -15,12 +15,16 @@ IMPLEMENT_DYNAMIC(CDlgEditEmoticons, CDialog)
 
 CDlgEditEmoticons::CDlgEditEmoticons(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgEditEmoticons::IDD, pParent)
+	, m_nRowCount(1)
+	, m_nColCount(1)
 {
 
+	CConfigManager::Inst()->IsOnConfig = TRUE;
 }
 
 CDlgEditEmoticons::~CDlgEditEmoticons()
 {
+	CConfigManager::Inst()->IsOnConfig = FALSE;
 }
 
 void CDlgEditEmoticons::DoDataExchange(CDataExchange* pDX)
@@ -38,6 +42,8 @@ void CDlgEditEmoticons::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MODGROUP, m_btnRenGroup);
 	DDX_Control(pDX, IDC_LEFTGROUP, m_btnLeftGroup);
 	DDX_Control(pDX, IDC_RIGHTGROUP, m_btnRightGroup);
+	DDX_Text(pDX, IDC_ROW, m_nRowCount);
+	DDX_Text(pDX, IDC_COL, m_nColCount);
 	CDialog::DoDataExchange(pDX);
 }
 
@@ -56,6 +62,8 @@ BEGIN_MESSAGE_MAP(CDlgEditEmoticons, CDialog)
 	ON_BN_CLICKED(IDC_RIGHTEMO, &CDlgEditEmoticons::OnBnClickedRightemo)
 	ON_BN_CLICKED(IDC_EXPORT, &CDlgEditEmoticons::OnBnClickedExport)
 	ON_BN_CLICKED(IDC_IMPORT, &CDlgEditEmoticons::OnBnClickedImport)
+	ON_BN_CLICKED(IDC_CLEAR, &CDlgEditEmoticons::OnBnClickedClear)
+	ON_BN_CLICKED(IDOK, &CDlgEditEmoticons::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -84,29 +92,13 @@ BOOL CDlgEditEmoticons::OnInitDialog()
 	m_lbxGroup.SetFont(&m_font);
 	m_lbxEmos.SetFont(&m_font);
 
-    showEmoCtrlsVisible(FALSE);
+	
+	m_nColCount = CConfigManager::Inst()->PopWindow.PageItem.ColumnCount;
+	m_nRowCount = CConfigManager::Inst()->PopWindow.PageItem.RowCount;
+	UpdateData();
 
 	// load data from config
-	for (POSITION posPage = CConfigManager::Inst()->Emoticons.Pages.GetHeadPosition();
-		posPage != NULL;)
-	{
-		CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetNext(posPage);
-
-		addGroup(curPage.Caption);
-		
-		for (POSITION posItem = curPage.Items.GetHeadPosition();
-			posItem != NULL;)
-		{
-			CConfigManager::_tag_emoticons::_tag_page::_tag_item item = curPage.Items.GetNext(posItem);
-
-			addEmo(item.Content);
-		}
-	}
-
-	if (m_emotions.Pages.GetCount() > 0)
-	{
-		showEmoCtrlsVisible(TRUE);
-	}
+	reloadData(CConfigManager::Inst()->Emoticons);
 
     return TRUE;
 }
@@ -114,16 +106,42 @@ BOOL CDlgEditEmoticons::OnInitDialog()
 // close dialog
 void CDlgEditEmoticons::OnOK()
 {
+	UpdateData(FALSE);
 
+	CConfigManager::Inst()->PopWindow.PageItem.ColumnCount = m_nColCount;
+	CConfigManager::Inst()->PopWindow.PageItem.RowCount = m_nRowCount;
+
+ 	CConfigManager::Inst()->Emoticons.Pages.RemoveAll();
+ 	for (POSITION posPage = m_emoticons.Pages.GetHeadPosition();
+ 		posPage != NULL;)
+ 	{
+ 		CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetNext(posPage);
+		CConfigManager::_tag_emoticons::_tag_page newPage;
+		newPage.Caption = curPage.Caption;
+
+ 		for (POSITION posItem = curPage.Items.GetHeadPosition();
+ 			posItem != NULL;)
+ 		{
+ 			CConfigManager::_tag_emoticons::_tag_page::_tag_item item = curPage.Items.GetNext(posItem);
+ 
+ 			newPage.Items.AddTail(item);
+ 		}
+
+		CConfigManager::Inst()->Emoticons.Pages.AddTail(newPage);
+ 	}
+
+	CConfigManager::Inst()->SaveConfig();
+
+	CDialog::OnOK();
 }
 
 // find position in group list
 POSITION CDlgEditEmoticons::getGroupPos(int nIndex)
 {
-	POSITION posCur = m_emotions.Pages.GetHeadPosition();
+	POSITION posCur = m_emoticons.Pages.GetHeadPosition();
 	for (int i = 0;i < nIndex;i ++)
 	{
-		m_emotions.Pages.GetNext(posCur);
+		m_emoticons.Pages.GetNext(posCur);
 	}
 
 	return posCur;
@@ -146,12 +164,49 @@ void CDlgEditEmoticons::addGroup( CString strName )
 {
 	CConfigManager::_tag_emoticons::_tag_page apage;
 	apage.Caption = strName;
-	m_emotions.Pages.AddTail(apage);
+	m_emoticons.Pages.AddTail(apage);
 
 	m_lbxGroup.InsertString(m_lbxGroup.GetCurSel() + 1,strName);
 	// select new item
 	m_lbxGroup.SetCurSel(m_lbxGroup.GetCurSel() + 1);
 	OnLbnSelchangeListGroup();
+}
+
+// reload data and interface
+void CDlgEditEmoticons::reloadData(CConfigManager::_tag_emoticons &emoticons)
+{
+	clearAll();
+
+	for (POSITION posPage = emoticons.Pages.GetHeadPosition();
+		posPage != NULL;)
+	{
+		CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetNext(posPage);
+
+		addGroup(curPage.Caption);
+
+		for (POSITION posItem = curPage.Items.GetHeadPosition();
+			posItem != NULL;)
+		{
+			CConfigManager::_tag_emoticons::_tag_page::_tag_item item = curPage.Items.GetNext(posItem);
+
+			addEmo(item.Content);
+		}
+	}
+
+	if (m_emoticons.Pages.GetCount() > 0)
+	{
+		showEmoCtrlsVisible(TRUE);
+	}
+}
+
+// clear all data and interface
+void CDlgEditEmoticons::clearAll()
+{
+	m_emoticons.Pages.RemoveAll();
+	m_lbxGroup.ResetContent();
+	m_lbxEmos.ResetContent();
+
+	showEmoCtrlsVisible(FALSE);
 }
 
 // button add group
@@ -189,7 +244,7 @@ void CDlgEditEmoticons::OnBnClickedDelgroup()
 		return ;
 	}
 
-	m_emotions.Pages.RemoveAt(getGroupPos(nCur));
+	m_emoticons.Pages.RemoveAt(getGroupPos(nCur));
 
 	m_lbxGroup.DeleteString(nCur);
 	// if deleted item is last item, select last item, else select next item
@@ -214,7 +269,7 @@ void CDlgEditEmoticons::OnBnClickedModgroup()
 	}
 	
 	POSITION pos = getGroupPos(nCur);
-	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 
 	CDlgAddOne dlg(this,curPage.Caption);
 
@@ -241,16 +296,16 @@ void CDlgEditEmoticons::OnBnClickedLeftgroup()
 	}
 
 	POSITION pos = getGroupPos(nCur);
-	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 	
 	POSITION posPrev = pos;
-	m_emotions.Pages.GetPrev(posPrev);
+	m_emoticons.Pages.GetPrev(posPrev);
 	if (posPrev == NULL)
 	{
 		return ;
 	}
-	m_emotions.Pages.InsertBefore(posPrev,curPage);
-	m_emotions.Pages.RemoveAt(pos);
+	m_emoticons.Pages.InsertBefore(posPrev,curPage);
+	m_emoticons.Pages.RemoveAt(pos);
 
 	m_lbxGroup.DeleteString(nCur);
 	m_lbxGroup.InsertString(nCur - 1,curPage.Caption);
@@ -270,16 +325,16 @@ void CDlgEditEmoticons::OnBnClickedRightgroup()
 	}
 
 	POSITION pos = getGroupPos(nCur);
-	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 
 	POSITION posPrev = pos;
-	m_emotions.Pages.GetNext(posPrev);
+	m_emoticons.Pages.GetNext(posPrev);
 	if (posPrev == NULL)
 	{
 		return ;
 	}
-	m_emotions.Pages.InsertAfter(posPrev,curPage);
-	m_emotions.Pages.RemoveAt(pos);
+	m_emoticons.Pages.InsertAfter(posPrev,curPage);
+	m_emoticons.Pages.RemoveAt(pos);
 
 	m_lbxGroup.DeleteString(nCur);
 	m_lbxGroup.InsertString(nCur + 1,curPage.Caption);
@@ -300,7 +355,7 @@ void CDlgEditEmoticons::OnLbnSelchangeListGroup()
 
 	POSITION posGroup = getGroupPos(nCur);
 
-	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(posGroup);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(posGroup);
 
 	m_lbxEmos.ResetContent();
 	for (POSITION pos = curPage.Items.GetHeadPosition();pos != NULL;)
@@ -322,7 +377,7 @@ void CDlgEditEmoticons::addEmo( CString strEmo )
 	}
 	POSITION pos = getGroupPos(nCur);
 
-	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 
 	CConfigManager::_tag_emoticons::_tag_page::_tag_item item;
 	item.Content = strEmo;
@@ -361,7 +416,7 @@ void CDlgEditEmoticons::OnBnClickedDelemo()
 // 	}
 
 	POSITION pos = getGroupPos(nCur);
-	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 
 	nCur = m_lbxEmos.GetCurSel();
 	
@@ -382,7 +437,7 @@ void CDlgEditEmoticons::OnBnClickedModemo()
 		return;
 	}
 	POSITION pos = getGroupPos(nCur);
-	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 
 	nCur = m_lbxEmos.GetCurSel();
 
@@ -416,7 +471,7 @@ void CDlgEditEmoticons::OnBnClickedLeftemo()
 		return;
 	}
 	POSITION pos = getGroupPos(nCur);
-	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 
 	nCur = m_lbxEmos.GetCurSel();
 
@@ -452,7 +507,7 @@ void CDlgEditEmoticons::OnBnClickedRightemo()
 		return;
 	}
 	POSITION pos = getGroupPos(nCur);
-	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 
 	nCur = m_lbxEmos.GetCurSel();
 
@@ -480,12 +535,25 @@ void CDlgEditEmoticons::OnBnClickedRightemo()
 
 void CDlgEditEmoticons::OnBnClickedExport()
 {
-	CDlgEmoticonFile dlg(this,TRUE,m_emotions);
+	CDlgEmoticonFile dlg(this,TRUE,m_emoticons);
 	dlg.DoModal();
 }
 
 void CDlgEditEmoticons::OnBnClickedImport()
 {
-	CDlgEmoticonFile dlg(this,FALSE,m_emotions);
-	dlg.DoModal();
+	CDlgEmoticonFile dlg(this,FALSE,m_emoticons);
+	if(dlg.DoModal() == IDOK)
+	{
+		reloadData(dlg.emoticons);
+	}
+}
+
+void CDlgEditEmoticons::OnBnClickedClear()
+{
+	clearAll();
+}
+
+void CDlgEditEmoticons::OnBnClickedOk()
+{
+	OnOK();
 }

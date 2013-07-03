@@ -45,10 +45,10 @@ void CWETabPage::Draw( CDC *pDC )
 		GetBodyRect(rcPage);
 
 		pDC->FillRect(rcPage,&br);
-	}
 
-	// draw children
-	CWEPaintUint::Draw(pDC);
+		// draw children
+		CWEPaintUint::Draw(pDC);
+	}
 }
 
 CWEPaintUint *CWETabPage::HitTest( CPoint ptHit,MouseEvent meMouse )

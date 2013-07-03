@@ -5,6 +5,7 @@
 #include "WinEmoticons.h"
 #include "DlgEmoticonFile.h"
 #include "Xml.h"
+#include "MsgBox.h"
 
 
 // CDlgEmoticonFile 
@@ -41,6 +42,22 @@ END_MESSAGE_MAP()
 
 // CDlgEmoticonFile 
 
+
+void CDlgEmoticonFile::calcInfo(CConfigManager::_tag_emoticons &emoticons)
+{
+	int nTotalEmoticons = 0;
+	for (POSITION pos = emoticons.Pages.GetHeadPosition();
+		pos != NULL;)
+	{
+		nTotalEmoticons += emoticons.Pages.GetNext(pos).Items.GetCount();
+	}
+
+	CString strInfo;
+	strInfo.Format(_T("共%d个分组，%d个单词"),
+		emoticons.Pages.GetCount(),nTotalEmoticons);
+	m_editInfo.SetWindowText(strInfo);
+}
+
 BOOL CDlgEmoticonFile::OnInitDialog()
 {
 	CDialog::OnInitDialog();
@@ -49,19 +66,11 @@ BOOL CDlgEmoticonFile::OnInitDialog()
 	if (m_bIsExport)
 	{
 		this->SetWindowText(_T("导出"));
+		this->SetDlgItemText(IDOK,_T("导出"));
 
 		// calc total emoticons
-		int nTotalEmoticons = 0;
-		for (POSITION pos = m_emotions.Pages.GetHeadPosition();
-			pos != NULL;)
-		{
-			nTotalEmoticons += m_emotions.Pages.GetNext(pos).Items.GetCount();
-		}
+		calcInfo(m_emotions);
 
-		CString strInfo;
-		strInfo.Format(_T("共%d个分组，%d个单词"),
-			m_emotions.Pages.GetCount(),nTotalEmoticons);
-		m_editInfo.SetWindowText(strInfo);
 
 		// default file name
 		CTime tmNow = CTime::GetCurrentTime();
@@ -76,6 +85,9 @@ BOOL CDlgEmoticonFile::OnInitDialog()
 	else
 	{
 		this->SetWindowText(_T("导入"));
+		this->SetDlgItemText(IDOK,_T("导入"));
+		m_editInfo.SetWindowText(_T(""));
+
 		m_editAuthor.SetReadOnly(TRUE);
 		m_editTitle.SetReadOnly(TRUE);
 		
@@ -96,6 +108,23 @@ void CDlgEmoticonFile::OnBnClickedSelfile()
 	if (dlg.DoModal() == IDOK)
 	{
 		m_editFilePath.SetWindowText(dlg.GetPathName());
+
+
+		if (!m_bIsExport)
+		{
+			CString strAuthor;
+			CString strTitle;
+			if(!CConfigManager::ImportEmoticons(emoticons,dlg.GetPathName(),strAuthor,strTitle))
+			{
+				CMsgBox::Error(_T("文件无法读取或格式不正确"),this);
+				return;
+			}
+
+			m_editAuthor.SetWindowText(strAuthor);
+			m_editTitle.SetWindowText(strTitle);
+
+			calcInfo(emoticons);
+		}
 	}
 }
 
@@ -112,12 +141,16 @@ void CDlgEmoticonFile::OnBnClickedOk()
 	{
 		if(CConfigManager::ExportEmoticons(m_emotions,strFilePath,strAuthor,strTitle))
 		{
-			MessageBox(_T("导出成功"),_T("提示"),MB_ICONINFORMATION);
+			CMsgBox::Info(_T("导出成功"),this);
 		}
 		else
 		{
-			MessageBox(_T("导出失败"),_T("错误"),MB_ICONERROR);
+			CMsgBox::Error(_T("导出失败"),this);
 		}
+	}
+	else
+	{
+		
 	}
 
 	OnOK();

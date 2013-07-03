@@ -75,6 +75,25 @@ CWEPaintUint * CWEPaintUint::CreateChild( CRect rcChild,CRuntimeClass *pClass )
 
 void CWEPaintUint::Remove()
 {
+	if (m_pParent != NULL)
+	{
+		if (this == m_pParent->FirstChild())
+		{
+			// replace first child
+			m_pParent->m_pFirstChild = this->NextSibling();
+		}
+		else
+		{
+			// re-connect sibling link
+			CWEPaintUint *pPrevSibling = m_pParent->FirstChild();
+			while(pPrevSibling->NextSibling() != this)
+			{
+				ASSERT(pPrevSibling != NULL);
+				pPrevSibling = pPrevSibling->NextSibling();
+			}
+			pPrevSibling->m_pNextSibling = this->NextSibling();
+		}
+	}
 	if (m_bIsNew)
 	{
 		delete this;
@@ -145,5 +164,15 @@ void CWEPaintUint::MoveRect( CRect rcNew )
 	{
 		pChild->MoveRect(rcNew);
 		pChild = pChild->m_pNextSibling;
+	}
+}
+
+void CWEPaintUint::RemoveChildren()
+{
+	for(CWEPaintUint *pChild = this->FirstChild();pChild != NULL;)
+	{
+		CWEPaintUint *pRemove = pChild;
+		pChild = pChild->NextSibling();
+		pRemove->Remove();
 	}
 }

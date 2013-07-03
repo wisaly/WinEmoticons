@@ -37,6 +37,8 @@
 #define IDC_EXPORT                      1020
 #define IDC_AUTHOR                      1020
 #define IDC_TITLE                       1021
+#define IDC_IMPORT2                     1021
+#define IDC_CLEAR                       1021
 #define IDC_FILE_PATH                   1022
 #define IDC_INFO                        1023
 #define ID__CONFIG                      32771

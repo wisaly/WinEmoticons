@@ -6,6 +6,6 @@ private:
     CMsgBox();
 
 public:
-    static void Error(CString strMsg,HWND hwndParent = NULL);
-    static void Info(CString strMsg,HWND hwndParent = NULL);
+    static void Error(CString strMsg,CWnd *pParent = NULL);
+    static void Info(CString strMsg,CWnd *pParent = NULL);
 };

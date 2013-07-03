@@ -6,6 +6,7 @@
 #include "WinEmoticonsDlg.h"
 #include "TestContainer.h"
 #include "ConfigManager.h"
+#include "MsgBox.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -43,9 +44,7 @@ BOOL CWinEmoticonsApp::InitInstance()
 	m_hApp = ::CreateMutex(NULL,FALSE,WE_MUTEX);
 	if(GetLastError()==ERROR_ALREADY_EXISTS)   
 	{  
-		AfxMessageBox(
-			_T("Application already launched, WinEmoticons can only run once."),
-			MB_OK|MB_ICONERROR);
+		CMsgBox::Error(_T("Application already launched, WinEmoticons can only run once."));
 		return FALSE;
 	}
 

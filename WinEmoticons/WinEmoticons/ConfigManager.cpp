@@ -12,6 +12,7 @@ CConfigManager * CConfigManager::Inst()
 CConfigManager::CConfigManager()
 {
 	configFilePath = CXml::GetApplicationPath() + _T("\\WEConfig.xml");
+	IsOnConfig = FALSE;
 }
 
 #pragma comment(lib,"version.lib")
@@ -563,6 +564,14 @@ BOOL CConfigManager::ExportEmoticons( _tag_emoticons &emoticons,CString &strFile
 	file.WriteLine(EXPORT_SEP_LINE);
 	
 	// write author,title
+	if (strAuthor.IsEmpty())
+	{
+		strAuthor = _T("Anonymous");
+	}
+	if (strTitle.IsEmpty())
+	{
+		strTitle = _T("Unmarked");
+	}
 	file.WriteLine(strAuthor);
 	file.WriteLine(strTitle);
 	file.WriteLine(EXPORT_SEP_LINE);
@@ -595,5 +604,59 @@ BOOL CConfigManager::ExportEmoticons( _tag_emoticons &emoticons,CString &strFile
 
 BOOL CConfigManager::ImportEmoticons( _tag_emoticons &emoticons,CString &strFilePath,CString &strAuthor,CString &strTitle )
 {
+	emoticons.Pages.RemoveAll();
+
+	CStdioFileEx file;
+
+	if (!file.Open(strFilePath,CFile::modeRead|CFile::typeText))
+	{
+		return FALSE;
+	}
+
+	CString strRead;
+	// read header
+	file.ReadString(strRead);
+	file.ReadString(strRead);
+	file.ReadString(strRead);
+	file.ReadString(strRead);
+// 	if (strRead != CConfigManager::Version())
+// 	{
+// 		return FALSE;
+// 	}
+	file.ReadString(strRead);
+
+	// write author,title
+	file.ReadString(strAuthor);
+	file.ReadString(strTitle);
+	file.ReadString(strRead);
+
+	if (strRead != EXPORT_SEP_LINE)
+	{
+		return FALSE;
+	}
+
+	while (file.ReadString(strRead))
+	{
+		// write page
+		_tag_emoticons::_tag_page newPage;
+		newPage.Caption = strRead;
+		
+		while(file.ReadString(strRead))
+		{
+			if (strRead == EXPORT_SEP_LINE)
+			{
+				break;
+			}
+			// write item
+			_tag_emoticons::_tag_page::_tag_item newItem;
+			newItem.Content = strRead;
+
+			newPage.Items.AddTail(newItem);
+		}
+
+		emoticons.Pages.AddTail(newPage);
+	}
+	file.Close();
+
 	return TRUE;
 }

@@ -29,20 +29,25 @@ protected:
 	CButton m_btnRenGroup;
 	CButton m_btnLeftGroup;
 	CButton m_btnRightGroup;
-	CConfigManager::_tag_emoticons m_emotions;
+	CConfigManager::_tag_emoticons m_emoticons;
 	void showEmoCtrlsVisible(BOOL bVisble);
 	POSITION getGroupPos(int nIndex);
 	POSITION getEmoPos(int nIndex,CConfigManager::_tag_emoticons::_tag_page &curPage);
 	void addGroup(CString strName);
 	void addEmo(CString strEmo);
+	void reloadData(CConfigManager::_tag_emoticons &emoticons);
+	void clearAll();
 
     virtual BOOL OnInitDialog();
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV
 
 	DECLARE_MESSAGE_MAP()
 public:
 	CEdit m_editRow;
 	CEdit m_editCol;
+	int m_nRowCount;
+	int m_nColCount;
 	afx_msg void OnBnClickedAddgroup();
 	afx_msg void OnBnClickedDelgroup();
 	afx_msg void OnBnClickedModgroup();
@@ -57,4 +62,6 @@ public:
 	afx_msg void OnBnClickedRightemo();
 	afx_msg void OnBnClickedExport();
 	afx_msg void OnBnClickedImport();
+	afx_msg void OnBnClickedClear();
+	afx_msg void OnBnClickedOk();
 };

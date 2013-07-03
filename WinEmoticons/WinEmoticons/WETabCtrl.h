@@ -11,6 +11,7 @@ class CWETabCtrl : public CWnd,public CWEPaintUint
 
 public:
 	CWETabCtrl();
+
 	virtual ~CWETabCtrl();
 
 	// Attributes:
@@ -44,8 +45,10 @@ public:
 	void Create(CRect rcWindow,CWnd *pParent,UINT nId);
 	void Draw(CDC *pDC);
 	CWETabPage *AppendPage(CString strCaption = _T(""));
+	void RemoveAllPages();
 	void ActivePage( CWETabPage * pPage );
 	void Redraw();
+	void ReloadColor();
 private:
 	void GetPageRect( CRect &rcPage );
 

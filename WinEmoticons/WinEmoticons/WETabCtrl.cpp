@@ -47,11 +47,8 @@ CWETabCtrl::CWETabCtrl()
     m_nColumnCount = CConfigManager::Inst()->PopWindow.PageItem.ColumnCount;
     m_nRowCount = CConfigManager::Inst()->PopWindow.PageItem.RowCount;
 
-    for (POSITION pos = CConfigManager::Inst()->PopWindow.Pages.Colors.GetHeadPosition();
-        pos != NULL;)
-    {
-        m_lstPageBackgrounds.AddTail(CConfigManager::Inst()->PopWindow.Pages.Colors.GetNext(pos));
-    }
+	ReloadColor();
+
     
     m_nPageCount = 0;
 	m_bCaptured = FALSE;
@@ -234,4 +231,23 @@ void CWETabCtrl::Create( CRect rcWindow,CWnd *pParent,UINT nId )
 {
 	LPCTSTR pClassName = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW,AfxGetApp()->LoadStandardCursor(IDC_ARROW));
 	CWnd::Create(pClassName,_T("WETabCtrl"),WS_VISIBLE|WS_CHILD,rcWindow,pParent,nId);
+}
+
+void CWETabCtrl::RemoveAllPages()
+{
+	this->RemoveChildren();
+	ReloadColor();
+	m_nPageCount = 0;
+	m_pActivePage = NULL;
+}
+
+void CWETabCtrl::ReloadColor()
+{
+	m_lstPageBackgrounds.RemoveAll();
+
+	for (POSITION pos = CConfigManager::Inst()->PopWindow.Pages.Colors.GetHeadPosition();
+		pos != NULL;)
+	{
+		m_lstPageBackgrounds.AddTail(CConfigManager::Inst()->PopWindow.Pages.Colors.GetNext(pos));
+	}
 }

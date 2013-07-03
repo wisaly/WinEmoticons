@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "MsgBox.h"
 
-void CMsgBox::Error( CString strMsg,HWND hwndParent /*= NULL*/ )
+void CMsgBox::Error( CString strMsg,CWnd *pParent /*= NULL*/ )
 {
-    ::MessageBox(hwndParent,strMsg,_T("错误"),MB_OK|MB_ICONERROR);
+    ::MessageBox(pParent->GetSafeHwnd(),strMsg,_T("错误"),MB_OK|MB_ICONERROR);
 }
 
-void CMsgBox::Info( CString strMsg,HWND hwndParent /*= NULL*/ )
+void CMsgBox::Info( CString strMsg,CWnd *pParent /*= NULL*/ )
 {
-    ::MessageBox(hwndParent,strMsg,_T("提示"),MB_OK|MB_ICONINFORMATION);
+    ::MessageBox(pParent->GetSafeHwnd(),strMsg,_T("提示"),MB_OK|MB_ICONINFORMATION);
 }

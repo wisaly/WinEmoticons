@@ -37,6 +37,8 @@ public:
 	CWEPaintUint *CreateChild(CRect rcChild,CRuntimeClass *pClass);
 	// remove this unit
 	void Remove();
+	// remove all children
+	void RemoveChildren();
 	// offset unit
 	void Offset(int nx,int ny);
 	// get rect coordinate to unit

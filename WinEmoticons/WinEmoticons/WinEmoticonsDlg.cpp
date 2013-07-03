@@ -71,8 +71,18 @@ void CWinEmoticonsDlg::OnBnClickedOk()
 
 void CWinEmoticonsDlg::OnBnEmoticon()
 {
-    CDlgEditEmoticons dlgEmoticons;
-    dlgEmoticons.DoModal();
+	// hide window
+	if (m_dlgPopup.IsWindowVisible())
+	{
+		m_dlgPopup.HideWindow();
+	}
+
+	// popup config window
+    CDlgEditEmoticons dlgEmoticons(this);
+    if(dlgEmoticons.DoModal() == IDOK)
+	{
+		m_dlgPopup.ReloadEmoticons();
+	}
 }
 
 LRESULT CWinEmoticonsDlg::OnTrayNotification( WPARAM wParam, LPARAM lParam )

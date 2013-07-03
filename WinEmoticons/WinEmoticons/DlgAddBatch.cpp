@@ -43,7 +43,7 @@ void CDlgAddBatch::OnBnClickedOk()
 
 	if (strContent.IsEmpty())
 	{
-		CMsgBox::Error(_T("ÇëÊäÈëÄÚÈÝ"));
+		CMsgBox::Error(_T("ÇëÊäÈëÄÚÈÝ"),this);
 		return;
 	}
 
