@@ -20,7 +20,7 @@
 #define IDC_CHECK_NOSTARTPOP            1005
 #define IDC_MODGROUP                    1005
 #define IDC_LIST_EMOS                   1006
-#define IDC_TAB_GROUP                   1007
+#define IDC_LIST_GROUP                  1007
 #define IDC_DELEMO                      1008
 #define IDC_CONTENT                     1008
 #define IDC_MODEMO                      1009
@@ -30,8 +30,10 @@
 #define IDC_LEFTGROUP                   1015
 #define IDC_RIGHTGROUP                  1016
 #define IDC_LEFTEMO                     1017
-#define IDC_RIGHTGROUP2                 1018
 #define IDC_RIGHTEMO                    1018
+#define IDC_IMPORT                      1019
+#define IDC_BUTTON3                     1020
+#define IDC_EXPORT                      1020
 #define ID__CONFIG                      32771
 #define ID__ABOUT                       32772
 #define ID__EXIT                        32773
@@ -42,7 +44,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32774
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

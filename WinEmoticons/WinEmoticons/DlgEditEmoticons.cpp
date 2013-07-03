@@ -24,7 +24,7 @@ CDlgEditEmoticons::~CDlgEditEmoticons()
 
 void CDlgEditEmoticons::DoDataExchange(CDataExchange* pDX)
 {
-	DDX_Control(pDX,IDC_TAB_GROUP,m_tabGroup);
+	DDX_Control(pDX,IDC_LIST_GROUP,m_lbxGroup);
 	DDX_Control(pDX,IDC_LIST_EMOS,m_lbxEmos);
 	DDX_Control(pDX,IDC_ADDEMO,m_btnAddEmo);
 	DDX_Control(pDX,IDC_DELEMO,m_btnDelEmo);
@@ -48,8 +48,11 @@ BEGIN_MESSAGE_MAP(CDlgEditEmoticons, CDialog)
 	ON_BN_CLICKED(IDC_LEFTGROUP, &CDlgEditEmoticons::OnBnClickedLeftgroup)
 	ON_BN_CLICKED(IDC_RIGHTGROUP, &CDlgEditEmoticons::OnBnClickedRightgroup)
 	ON_BN_CLICKED(IDC_ADDEMO, &CDlgEditEmoticons::OnBnClickedAddemo)
-	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_GROUP, &CDlgEditEmoticons::OnTcnSelchangeTabGroup)
 	ON_BN_CLICKED(IDC_DELEMO, &CDlgEditEmoticons::OnBnClickedDelemo)
+	ON_LBN_SELCHANGE(IDC_LIST_GROUP, &CDlgEditEmoticons::OnLbnSelchangeListGroup)
+	ON_BN_CLICKED(IDC_MODEMO, &CDlgEditEmoticons::OnBnClickedModemo)
+	ON_BN_CLICKED(IDC_LEFTEMO, &CDlgEditEmoticons::OnBnClickedLeftemo)
+	ON_BN_CLICKED(IDC_RIGHTEMO, &CDlgEditEmoticons::OnBnClickedRightemo)
 END_MESSAGE_MAP()
 
 
@@ -67,6 +70,7 @@ void CDlgEditEmoticons::showEmoCtrlsVisible( BOOL bVisble )
 	m_btnRightGroup.ShowWindow(bVisble ? SW_SHOW : SW_HIDE);
 }
 
+// initialize dialog
 BOOL CDlgEditEmoticons::OnInitDialog()
 {
     CDialog::OnInitDialog();
@@ -76,11 +80,13 @@ BOOL CDlgEditEmoticons::OnInitDialog()
     return TRUE;
 }
 
+// close dialog
 void CDlgEditEmoticons::OnOK()
 {
 
 }
 
+// find position in group list
 POSITION CDlgEditEmoticons::getGroupPos(int nIndex)
 {
 	POSITION posCur = m_emotions.Pages.GetHeadPosition();
@@ -92,6 +98,7 @@ POSITION CDlgEditEmoticons::getGroupPos(int nIndex)
 	return posCur;
 }
 
+// find position in item list
 POSITION CDlgEditEmoticons::getEmoPos( int nIndex,CConfigManager::_tag_emoticons::_tag_page &curPage )
 {
 	POSITION posEmo = curPage.Items.GetHeadPosition();
@@ -103,42 +110,43 @@ POSITION CDlgEditEmoticons::getEmoPos( int nIndex,CConfigManager::_tag_emoticons
 	return posEmo;
 }
 
+// add a group, both data and interface
 void CDlgEditEmoticons::addGroup( CString strName )
 {
-	m_tabGroup.InsertItem(m_tabGroup.GetCurSel() + 1,strName);
+	m_lbxGroup.InsertString(m_lbxGroup.GetCurSel() + 1,strName);
+	// select new item
+	m_lbxGroup.SetCurSel(m_lbxGroup.GetCurSel() + 1);
+
 	CConfigManager::_tag_emoticons::_tag_page apage;
 	apage.Caption = strName;
 	m_emotions.Pages.AddTail(apage);
-	m_tabGroup.SetCurSel(m_tabGroup.GetCurSel() + 1);
 }
 
-void CDlgEditEmoticons::delGroup( int nCur )
-{
-	m_emotions.Pages.RemoveAt(getGroupPos(nCur));
-
-	m_tabGroup.DeleteItem(nCur);
-	m_tabGroup.SetCurSel(nCur > 1 ? nCur - 1 : 0);
-}
-
+// button add group
 void CDlgEditEmoticons::OnBnClickedAddgroup()
 {
 	// 
 	CDlgAddBatch dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		// add first group, show all control
+		if(m_lbxGroup.GetCount() == 0 && dlg.input.GetCount() > 0)
+		{
+			showEmoCtrlsVisible(TRUE);
+		}
+
 		for (POSITION pos = dlg.input.GetHeadPosition();pos != NULL;)
 		{
 			CString strGroup = dlg.input.GetNext(pos);
 			addGroup(strGroup);
 		}
-
-		showEmoCtrlsVisible(TRUE);
 	}
 }
 
+// button delete group
 void CDlgEditEmoticons::OnBnClickedDelgroup()
 {
-	int nCur = m_tabGroup.GetCurSel();
+	int nCur = m_lbxGroup.GetCurSel();
 	
 	if (nCur < 0)
 	{
@@ -149,23 +157,23 @@ void CDlgEditEmoticons::OnBnClickedDelgroup()
 		return ;
 	}
 
-	delGroup(nCur);
+	m_emotions.Pages.RemoveAt(getGroupPos(nCur));
 
-	if(m_tabGroup.GetItemCount() == 0)
+	m_lbxGroup.DeleteString(nCur);
+	// if deleted item is last item, select last item, else select next item
+	m_lbxGroup.SetCurSel(nCur >= m_lbxGroup.GetCount() ? m_lbxGroup.GetCount() - 1 : nCur);
+
+	// delete last item, hide control
+	if(m_lbxGroup.GetCount() == 0)
 	{
 		showEmoCtrlsVisible(FALSE);
 	}
-	else
-	{
-		m_tabGroup.ShowWindow(SW_HIDE);
-		m_tabGroup.ShowWindow(SW_SHOW);
-	}
 }
 
-
+// button modify group
 void CDlgEditEmoticons::OnBnClickedModgroup()
 {
-	int nCur = m_tabGroup.GetCurSel();
+	int nCur = m_lbxGroup.GetCurSel();
 
 	if (nCur < 0)
 	{
@@ -181,16 +189,17 @@ void CDlgEditEmoticons::OnBnClickedModgroup()
 	{
 		curPage.Caption = dlg.input;
 
-		TCITEM tabCtrlItem;
-		tabCtrlItem.mask = TCIF_TEXT;
-		tabCtrlItem.pszText = dlg.input.GetBuffer();
-		m_tabGroup.SetItem(nCur,&tabCtrlItem);
+		m_lbxGroup.DeleteString(nCur);
+		m_lbxGroup.InsertString(nCur,dlg.input);
+
+		m_lbxGroup.SetCurSel(nCur);
 	}
 }
 
+// button move left
 void CDlgEditEmoticons::OnBnClickedLeftgroup()
 {
-	int nCur = m_tabGroup.GetCurSel();
+	int nCur = m_lbxGroup.GetCurSel();
 
 	if (nCur < 0)
 	{
@@ -209,16 +218,16 @@ void CDlgEditEmoticons::OnBnClickedLeftgroup()
 	m_emotions.Pages.InsertBefore(posPrev,curPage);
 	m_emotions.Pages.RemoveAt(pos);
 
-	m_tabGroup.DeleteItem(nCur);
-	m_tabGroup.InsertItem(nCur - 1,curPage.Caption);
+	m_lbxGroup.DeleteString(nCur);
+	m_lbxGroup.InsertString(nCur - 1,curPage.Caption);
 
-	m_tabGroup.ShowWindow(SW_HIDE);
-	m_tabGroup.ShowWindow(SW_SHOW);
+	m_lbxGroup.SetCurSel(nCur - 1);
 }
 
+// button move right
 void CDlgEditEmoticons::OnBnClickedRightgroup()
 {
-	int nCur = m_tabGroup.GetCurSel();
+	int nCur = m_lbxGroup.GetCurSel();
 
 	if (nCur < 0)
 	{
@@ -237,17 +246,17 @@ void CDlgEditEmoticons::OnBnClickedRightgroup()
 	m_emotions.Pages.InsertAfter(posPrev,curPage);
 	m_emotions.Pages.RemoveAt(pos);
 
-	m_tabGroup.DeleteItem(nCur);
-	m_tabGroup.InsertItem(nCur + 1,curPage.Caption);
+	m_lbxGroup.DeleteString(nCur);
+	m_lbxGroup.InsertString(nCur + 1,curPage.Caption);
 
-	m_tabGroup.ShowWindow(SW_HIDE);
-	m_tabGroup.ShowWindow(SW_SHOW);
+	m_lbxGroup.SetCurSel(nCur + 1);
 }
 
-void CDlgEditEmoticons::OnTcnSelchangeTabGroup(NMHDR *pNMHDR, LRESULT *pResult)
+// list box select change
+void CDlgEditEmoticons::OnLbnSelchangeListGroup()
 {
 	// 
-	int nCur = m_tabGroup.GetCurSel();
+	int nCur = m_lbxGroup.GetCurSel();
 	POSITION posGroup = getGroupPos(nCur);
 
 	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(posGroup);
@@ -259,13 +268,12 @@ void CDlgEditEmoticons::OnTcnSelchangeTabGroup(NMHDR *pNMHDR, LRESULT *pResult)
 
 		m_lbxEmos.AddString(item.Content);
 	}
-
-	*pResult = 0;
 }
 
+// add emoticon, both data and interface
 void CDlgEditEmoticons::addEmo( CString strEmo )
 {
-	int nCur = m_tabGroup.GetCurSel();
+	int nCur = m_lbxGroup.GetCurSel();
 
 	if (nCur < 0)
 	{
@@ -282,6 +290,7 @@ void CDlgEditEmoticons::addEmo( CString strEmo )
 	m_lbxEmos.InsertString(m_lbxEmos.GetCurSel(),strEmo);
 }
 
+// button add emoticon
 void CDlgEditEmoticons::OnBnClickedAddemo()
 {
 	CDlgAddBatch dlg;
@@ -295,23 +304,135 @@ void CDlgEditEmoticons::OnBnClickedAddemo()
 	}
 }
 
-
+// button delete emoticon
 void CDlgEditEmoticons::OnBnClickedDelemo()
 {
-	if(MessageBox(_T("确认删除？"),_T("提示"),MB_OKCANCEL|MB_ICONQUESTION) == IDCANCEL)
+	int nCur = m_lbxGroup.GetCurSel();
+
+	if (nCur < 0)
 	{
 		return ;
 	}
 
-	int nCur = m_tabGroup.GetCurSel();
+// 	if(MessageBox(_T("确认删除？"),_T("提示"),MB_OKCANCEL|MB_ICONQUESTION) == IDCANCEL)
+// 	{
+// 		return ;
+// 	}
 
 	POSITION pos = getGroupPos(nCur);
 	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
 
-	int nCurEmo = m_lbxEmos.GetCurSel();
+	nCur = m_lbxEmos.GetCurSel();
 	
-	POSITION pos = getEmoPos(nCur);
+	pos = getEmoPos(nCur,curPage);
+
+	curPage.Items.RemoveAt(pos);
 	m_lbxEmos.DeleteString(nCur);
-	
-	
+	m_lbxEmos.SetCurSel(nCur >= m_lbxEmos.GetCount() ? m_lbxEmos.GetCount() - 1 : nCur);
+}
+
+// button modify emoticon
+void CDlgEditEmoticons::OnBnClickedModemo()
+{
+	int nCur = m_lbxGroup.GetCurSel();
+
+	if (nCur < 0)
+	{
+		return;
+	}
+	POSITION pos = getGroupPos(nCur);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+
+	nCur = m_lbxEmos.GetCurSel();
+
+	if (nCur < 0)
+	{
+		return;
+	}
+	pos = getEmoPos(nCur,curPage);
+	CConfigManager::_tag_emoticons::_tag_page::_tag_item &curItem = curPage.Items.GetAt(pos);
+
+	CDlgAddOne dlg(this,curItem.Content);
+
+	if (dlg.DoModal() == IDOK)
+	{
+		curItem.Content = dlg.input;
+
+		m_lbxEmos.DeleteString(nCur);
+		m_lbxEmos.InsertString(nCur,curItem.Content);
+
+		m_lbxEmos.SetCurSel(nCur);
+	}
+}
+
+// button move left
+void CDlgEditEmoticons::OnBnClickedLeftemo()
+{
+	int nCur = m_lbxGroup.GetCurSel();
+
+	if (nCur < 0)
+	{
+		return;
+	}
+	POSITION pos = getGroupPos(nCur);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+
+	nCur = m_lbxEmos.GetCurSel();
+
+	if (nCur < 0)
+	{
+		return;
+	}
+	pos = getEmoPos(nCur,curPage);
+	CConfigManager::_tag_emoticons::_tag_page::_tag_item &curItem = curPage.Items.GetAt(pos);
+
+	POSITION posPrev = pos;
+	curPage.Items.GetPrev(posPrev);
+	if (posPrev == NULL)
+	{
+		return ;
+	}
+	curPage.Items.InsertBefore(posPrev,curItem);
+	curPage.Items.RemoveAt(pos);
+
+	m_lbxEmos.DeleteString(nCur);
+	m_lbxEmos.InsertString(nCur - 1,curItem.Content);
+
+	m_lbxEmos.SetCurSel(nCur - 1);
+}
+
+// button move right
+void CDlgEditEmoticons::OnBnClickedRightemo()
+{
+	int nCur = m_lbxGroup.GetCurSel();
+
+	if (nCur < 0)
+	{
+		return;
+	}
+	POSITION pos = getGroupPos(nCur);
+	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emotions.Pages.GetAt(pos);
+
+	nCur = m_lbxEmos.GetCurSel();
+
+	if (nCur < 0)
+	{
+		return;
+	}
+	pos = getEmoPos(nCur,curPage);
+	CConfigManager::_tag_emoticons::_tag_page::_tag_item &curItem = curPage.Items.GetAt(pos);
+
+	POSITION posAfter = pos;
+	curPage.Items.GetNext(posAfter);
+	if (posAfter == NULL)
+	{
+		return ;
+	}
+	curPage.Items.InsertAfter(posAfter,curItem);
+	curPage.Items.RemoveAt(pos);
+
+	m_lbxEmos.DeleteString(nCur);
+	m_lbxEmos.InsertString(nCur + 1,curItem.Content);
+
+	m_lbxEmos.SetCurSel(nCur + 1);
 }
