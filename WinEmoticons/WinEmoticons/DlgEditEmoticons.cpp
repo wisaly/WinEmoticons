@@ -480,7 +480,7 @@ void CDlgEditEmoticons::OnBnClickedLeftemo()
 		return;
 	}
 	pos = getEmoPos(nCur,curPage);
-	CConfigManager::_tag_emoticons::_tag_page::_tag_item &curItem = curPage.Items.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page::_tag_item curItem = curPage.Items.GetAt(pos);
 
 	POSITION posPrev = pos;
 	curPage.Items.GetPrev(posPrev);
@@ -516,7 +516,7 @@ void CDlgEditEmoticons::OnBnClickedRightemo()
 		return;
 	}
 	pos = getEmoPos(nCur,curPage);
-	CConfigManager::_tag_emoticons::_tag_page::_tag_item &curItem = curPage.Items.GetAt(pos);
+	CConfigManager::_tag_emoticons::_tag_page::_tag_item curItem = curPage.Items.GetAt(pos);
 
 	POSITION posAfter = pos;
 	curPage.Items.GetNext(posAfter);
