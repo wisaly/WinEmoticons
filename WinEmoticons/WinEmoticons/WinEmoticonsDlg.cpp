@@ -117,8 +117,8 @@ void CWinEmoticonsDlg::OnTrayAbout()
 // check no start pop
 void CWinEmoticonsDlg::OnBnClickedCheckNostartpop()
 {
-	m_bVisible = m_editNoStartpop.GetCheck() == 0;
-	CConfigManager::Inst()->ConfigWindow.PopAtStart = !m_bVisible;
+	CConfigManager::Inst()->ConfigWindow.PopAtStart
+		= m_editNoStartpop.GetCheck() == 0;
 	CConfigManager::Inst()->SaveConfig();
 }
 
