@@ -131,7 +131,7 @@ BEGIN
     LTEXT           "行数:",IDC_STATIC,230,210,20,8
     LTEXT           "列数:",IDC_STATIC,157,210,20,8
     GROUPBOX        "分组",IDC_STATIC,7,17,124,187
-    GROUPBOX        "颜文字",IDC_STATIC,139,17,160,187
+    GROUPBOX        "颜文字",IDC_GROUP_EMOTICON,139,17,160,187
     LTEXT           "+ 添加，- 删除，= 修改，< 前移，< 后移",IDC_STATIC,7,7,292,8
 END
 

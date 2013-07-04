@@ -64,4 +64,5 @@ public:
 	afx_msg void OnBnClickedImport();
 	afx_msg void OnBnClickedClear();
 	afx_msg void OnBnClickedOk();
+	CStatic m_wndGroupEmoticon;
 };

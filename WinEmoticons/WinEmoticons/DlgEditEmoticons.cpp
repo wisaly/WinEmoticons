@@ -44,6 +44,7 @@ void CDlgEditEmoticons::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RIGHTGROUP, m_btnRightGroup);
 	DDX_Text(pDX, IDC_ROW, m_nRowCount);
 	DDX_Text(pDX, IDC_COL, m_nColCount);
+	DDX_Control(pDX, IDC_GROUP_EMOTICON, m_wndGroupEmoticon);
 	CDialog::DoDataExchange(pDX);
 }
 
@@ -79,6 +80,7 @@ void CDlgEditEmoticons::showEmoCtrlsVisible( BOOL bVisble )
 	m_btnRenGroup.ShowWindow(bVisble ? SW_SHOW : SW_HIDE);
 	m_btnLeftGroup.ShowWindow(bVisble ? SW_SHOW : SW_HIDE);
 	m_btnRightGroup.ShowWindow(bVisble ? SW_SHOW : SW_HIDE);
+	m_wndGroupEmoticon.ShowWindow(bVisble ? SW_SHOW : SW_HIDE);
 }
 
 // initialize dialog
@@ -196,6 +198,9 @@ void CDlgEditEmoticons::reloadData(CConfigManager::_tag_emoticons &emoticons)
 	if (m_emoticons.Pages.GetCount() > 0)
 	{
 		showEmoCtrlsVisible(TRUE);
+
+		m_lbxGroup.SetCurSel(0);
+		OnLbnSelchangeListGroup();
 	}
 }
 
@@ -550,6 +555,10 @@ void CDlgEditEmoticons::OnBnClickedImport()
 
 void CDlgEditEmoticons::OnBnClickedClear()
 {
+	if(MessageBox(_T("确认清空？"),_T("提示"),MB_OKCANCEL|MB_ICONQUESTION) == IDCANCEL)
+	{
+		return ;
+	}
 	clearAll();
 }
 
