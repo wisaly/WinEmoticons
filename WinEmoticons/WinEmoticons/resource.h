@@ -12,6 +12,7 @@
 #define IDD_ADDBATCH                    134
 #define IDD_ADDONE                      135
 #define IDD_EMOTICON_FILE               136
+#define IDD_ABOUT                       137
 #define IDC_BUTTON1                     1002
 #define IDC_BTN_EMOTICONS               1002
 #define IDC_ADDGROUP                    1002
@@ -37,10 +38,12 @@
 #define IDC_EXPORT                      1020
 #define IDC_AUTHOR                      1020
 #define IDC_TITLE                       1021
-#define IDC_IMPORT2                     1021
 #define IDC_CLEAR                       1021
 #define IDC_FILE_PATH                   1022
 #define IDC_INFO                        1023
+#define IDC_HOME_PAGE                   1024
+#define IDC_SYSLINK2                    1025
+#define IDC_ISSUE_PAGE                  1025
 #define ID__CONFIG                      32771
 #define ID__ABOUT                       32772
 #define ID__EXIT                        32773
@@ -49,9 +52,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        137
+#define _APS_NEXT_RESOURCE_VALUE        138
 #define _APS_NEXT_COMMAND_VALUE         32774
-#define _APS_NEXT_CONTROL_VALUE         1024
+#define _APS_NEXT_CONTROL_VALUE         1025
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

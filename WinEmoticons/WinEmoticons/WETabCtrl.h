@@ -48,7 +48,7 @@ public:
 	void RemoveAllPages();
 	void ActivePage( CWETabPage * pPage );
 	void Redraw();
-	void ReloadColor();
+	void ReloadSetting();
 private:
 	void GetPageRect( CRect &rcPage );
 

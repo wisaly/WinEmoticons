@@ -173,6 +173,25 @@ BEGIN
     LTEXT           "统计信息",IDC_INFO,7,47,144,8
 END
 
+IDD_ABOUT DIALOGEX 0, 0, 201, 88
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于"
+FONT 10, "微软雅黑", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "关闭(&C)",IDOK,153,67,41,14
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
+    LTEXT           "WinEmoticons",IDC_STATIC,41,7,153,8
+    LTEXT           "版本 : 1.0.0.1",IDC_STATIC,41,16,153,8
+    LTEXT           "作者 : Kris(wisaly@gmail.com)",IDC_STATIC,41,24,153,8
+    LTEXT           "WinEmoticons是自由软件，使用GPL许可协议。",IDC_STATIC,7,70,145,8
+    LTEXT           "项目主页 :",IDC_STATIC,7,41,41,8
+    CONTROL         "<a>https://github.com/wisaly/WinEmoticons</a>",IDC_HOME_PAGE,
+                    "SysLink",WS_TABSTOP,43,41,145,10
+    LTEXT           "问题提交 :",IDC_STATIC,7,51,41,8
+    CONTROL         "<a>https://github.com/wisaly/WinEmoticons/issues</a>",IDC_ISSUE_PAGE,
+                    "SysLink",WS_TABSTOP,43,51,145,10
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -200,7 +219,7 @@ BEGIN
             VALUE "FileDescription", "Emoticons input method for windows."
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "WinEmoticons.exe"
-            VALUE "LegalCopyright", "wisaly@gmail.com, all rights reserved."
+            VALUE "LegalCopyright", "wisaly@gmail.com"
             VALUE "OriginalFilename", "WinEmoticons.exe"
             VALUE "ProductName", "WinEmoticons"
             VALUE "ProductVersion", "1.0.0.1"
@@ -267,6 +286,14 @@ BEGIN
         RIGHTMARGIN, 151
         TOPMARGIN, 7
         BOTTOMMARGIN, 104
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 194
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 81
     END
 END
 #endif    // APSTUDIO_INVOKED

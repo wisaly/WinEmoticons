@@ -95,7 +95,7 @@ BOOL CDlgEditEmoticons::OnInitDialog()
 	
 	m_nColCount = CConfigManager::Inst()->PopWindow.PageItem.ColumnCount;
 	m_nRowCount = CConfigManager::Inst()->PopWindow.PageItem.RowCount;
-	UpdateData();
+	UpdateData(FALSE);
 
 	// load data from config
 	reloadData(CConfigManager::Inst()->Emoticons);
@@ -106,7 +106,7 @@ BOOL CDlgEditEmoticons::OnInitDialog()
 // close dialog
 void CDlgEditEmoticons::OnOK()
 {
-	UpdateData(FALSE);
+	UpdateData(TRUE);
 
 	CConfigManager::Inst()->PopWindow.PageItem.ColumnCount = m_nColCount;
 	CConfigManager::Inst()->PopWindow.PageItem.RowCount = m_nRowCount;

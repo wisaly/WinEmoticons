@@ -44,10 +44,9 @@ CWETabCtrl::CWETabCtrl()
     m_nItemPadding = CConfigManager::Inst()->PopWindow.PageItem.ItemPadding;
     m_nFontSize = CConfigManager::Inst()->PopWindow.FontSize;
     m_strFontName = CConfigManager::Inst()->PopWindow.FontName;
-    m_nColumnCount = CConfigManager::Inst()->PopWindow.PageItem.ColumnCount;
-    m_nRowCount = CConfigManager::Inst()->PopWindow.PageItem.RowCount;
+    
 
-	ReloadColor();
+	ReloadSetting();
 
     
     m_nPageCount = 0;
@@ -236,13 +235,16 @@ void CWETabCtrl::Create( CRect rcWindow,CWnd *pParent,UINT nId )
 void CWETabCtrl::RemoveAllPages()
 {
 	this->RemoveChildren();
-	ReloadColor();
+	ReloadSetting();
 	m_nPageCount = 0;
 	m_pActivePage = NULL;
 }
 
-void CWETabCtrl::ReloadColor()
+void CWETabCtrl::ReloadSetting()
 {
+	m_nColumnCount = CConfigManager::Inst()->PopWindow.PageItem.ColumnCount;
+	m_nRowCount = CConfigManager::Inst()->PopWindow.PageItem.RowCount;
+
 	m_lstPageBackgrounds.RemoveAll();
 
 	for (POSITION pos = CConfigManager::Inst()->PopWindow.Pages.Colors.GetHeadPosition();

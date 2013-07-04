@@ -6,6 +6,7 @@
 #include "WinEmoticonsDlg.h"
 #include "DlgPopup.h"
 #include "DlgEditEmoticons.h"
+#include "DlgAbout.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,6 +21,7 @@ CWinEmoticonsDlg::CWinEmoticonsDlg(CWnd* pParent /*=NULL*/)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
+	m_bVisible = CConfigManager::Inst()->ConfigWindow.PopAtStart;
 }
 
 CWinEmoticonsDlg::~CWinEmoticonsDlg()
@@ -29,6 +31,7 @@ CWinEmoticonsDlg::~CWinEmoticonsDlg()
 void CWinEmoticonsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_CHECK_NOSTARTPOP, m_editNoStartpop);
 }
 
 BEGIN_MESSAGE_MAP(CWinEmoticonsDlg, CDialog)
@@ -40,6 +43,8 @@ BEGIN_MESSAGE_MAP(CWinEmoticonsDlg, CDialog)
     ON_COMMAND(ID__EXIT,OnTrayExit)
     ON_COMMAND(ID__CONFIG,OnTrayConfig)
     ON_COMMAND(ID__ABOUT,OnTrayAbout)
+	ON_BN_CLICKED(IDC_CHECK_NOSTARTPOP, &CWinEmoticonsDlg::OnBnClickedCheckNostartpop)
+	ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
 
 
@@ -47,8 +52,10 @@ BOOL CWinEmoticonsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	SetIcon(m_hIcon, TRUE);			// 设置大图标
-	SetIcon(m_hIcon, FALSE);		// 设置小图标
+	SetIcon(m_hIcon, TRUE);			// 
+	SetIcon(m_hIcon, FALSE);		// 
+
+	m_editNoStartpop.SetCheck(m_bVisible ? 0 : 1);
 
 	m_dlgPopup.Create();
 
@@ -97,10 +104,31 @@ void CWinEmoticonsDlg::OnTrayExit()
 
 void CWinEmoticonsDlg::OnTrayConfig()
 {
+	m_bVisible = TRUE;
     this->ShowWindow(this->IsWindowVisible() ? SW_HIDE : SW_SHOW);
 }
 
 void CWinEmoticonsDlg::OnTrayAbout()
 {
-    
+    CDlgAbout dlg;
+	dlg.DoModal();
+}
+
+// check no start pop
+void CWinEmoticonsDlg::OnBnClickedCheckNostartpop()
+{
+	m_bVisible = m_editNoStartpop.GetCheck() == 0;
+	CConfigManager::Inst()->ConfigWindow.PopAtStart = !m_bVisible;
+	CConfigManager::Inst()->SaveConfig();
+}
+
+// hide window at start
+void CWinEmoticonsDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
+{
+	if(!m_bVisible)
+	{
+		lpwndpos->flags &= ~SWP_SHOWWINDOW;
+	}
+
+	CDialog::OnWindowPosChanging(lpwndpos);
 }
