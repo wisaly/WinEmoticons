@@ -295,17 +295,17 @@ DWORD CXmlNode::GetAttribute( CString strName, int iValue )
 	return _ttol(strValue);
 }
 
-BOOL CXmlNode::GetAttribute( CString strName, bool bValue )
+bool CXmlNode::GetAttribute( CString strName, bool bValue )
 {
 	CString strValue = GetAttribute(strName);
 
 	if (strValue.CompareNoCase(_T("TRUE")) == 0)
 	{
-		return TRUE;
+		return true;
 	}
 	else if (strValue.CompareNoCase(_T("FALSE")) == 0)
 	{
-		return FALSE;
+		return false;
 	}
 	else
 	{

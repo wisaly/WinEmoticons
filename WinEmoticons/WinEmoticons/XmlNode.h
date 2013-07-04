@@ -70,7 +70,7 @@ public:
 	//______|	Attributes   |___________________________________________________________________
 	CString GetAttribute( CString strName, LPCTSTR lpszDefault = NULL);
 	DWORD GetAttribute( CString strName, int iValue);			// add by mqm @ 2011.3.25
-	BOOL GetAttribute( CString strName, bool bValue);			// add by mqm @ 2011.3.25
+	bool GetAttribute( CString strName, bool bValue);			// add by mqm @ 2011.3.25
 	COLORREF GetAttribute( CString strName,COLORREF crValue);	// add by mqm @ 2013.4.24
 
 	BOOL SetAttribute(  CString strName, CString strValue);

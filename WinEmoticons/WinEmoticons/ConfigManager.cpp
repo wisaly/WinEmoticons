@@ -156,7 +156,7 @@ BOOL CConfigManager::SaveConfig()
 
 	// ConfigWindow
 	CXmlNodePtr pConfigWindow = pRoot->AppendChild(_T("ConfigWindow"));
-	pConfigWindow->SetAttribute(_T("PopAtStart"),this->ConfigWindow.PopAtStart);
+	pConfigWindow->SetAttribute(_T("PopAtStart"),(bool)this->ConfigWindow.PopAtStart);
 
 	// AccerateKey
 	CXmlNodePtr pAccerateKey = pRoot->AppendChild(_T("AccerateKey"));

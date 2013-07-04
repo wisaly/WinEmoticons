@@ -6,7 +6,7 @@ public:
 	CString configFilePath;
 	struct _tag_configwindow_
 	{
-		BOOL PopAtStart;
+		bool PopAtStart;
 	}ConfigWindow;
 	struct _tag_acceratekey_
 	{
