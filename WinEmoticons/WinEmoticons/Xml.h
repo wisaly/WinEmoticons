@@ -19,7 +19,7 @@ public:
 	~CXml(void);
 
 protected:
-	MSXML2::IXMLDOMDocument2Ptr m_pDoc; 
+	MSXML2::IXMLDOMDocumentPtr  m_pDoc; 
 	CString						m_strFilePath;
 
 public:

@@ -56,10 +56,12 @@ BOOL CXml::Open( CString strXmlFilePath )
 {
 	HRESULT hr = S_OK;
 
-	hr = m_pDoc.CreateInstance( __uuidof(MSXML2::DOMDocument40) );
+	//hr = m_pDoc.CreateInstance( __uuidof(MSXML2::DOMDocument40) );
+	hr = m_pDoc.CreateInstance( _T("Msxml2.DOMDocument.6.0") );
 	if( !SUCCEEDED(hr) )
 	{
 		// CoInitialize?
+		AfxMessageBox(_T("不能创建MSXML实例，程序无法继续运行"));
 		ASSERT(FALSE);
 		return FALSE;
 	}
@@ -101,10 +103,11 @@ BOOL CXml::Create( CString strXmlFilePath )
 {
 	HRESULT hr = S_OK;
 	
-	hr = m_pDoc.CreateInstance( __uuidof(MSXML2::DOMDocument40) );
+	hr = m_pDoc.CreateInstance( _T("Msxml2.DOMDocument.6.0") );
 	if( !SUCCEEDED(hr) )
 	{
 		// CoInitialize?
+		AfxMessageBox(_T("不能创建MSXML实例，程序无法继续运行"));
 		ASSERT(FALSE);
 		return FALSE;
 	}
