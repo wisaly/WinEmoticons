@@ -433,6 +433,14 @@
 				RelativePath=".\Ntray.h"
 				>
 			</File>
+			<File
+				RelativePath=".\verinfo.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\verinfo.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

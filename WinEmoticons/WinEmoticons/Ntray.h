@@ -63,6 +63,7 @@ protected:
 class CTrayNotifyIcon : public CObject
 {
 public:
+	enum {ICON_MBUTTONUP = WM_USER + 0x0bbb};
 	//Constructors / Destructors
 	CTrayNotifyIcon();
 	~CTrayNotifyIcon();
@@ -75,6 +76,8 @@ public:
 	BOOL    SetTooltipText(LPCTSTR pszTooltipText);
 	BOOL    SetTooltipText(UINT nID);
 	CString GetTooltipText() const;
+
+	BOOL	ShowBallonText(LPCTSTR pszText,LPCTSTR pszTitle = _T(""),UINT nTimeout = 2000);
 	
 	//Change or retrieve the icon displayed
 	BOOL  SetIcon(HICON hIcon);
@@ -118,7 +121,6 @@ protected:
 	BOOL                  m_bAnimated;
 	
 	DECLARE_DYNAMIC(CTrayNotifyIcon)
-		
 	friend class CTrayTimerWnd;
 public:
 	CMenu m_menu;

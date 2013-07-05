@@ -8,7 +8,45 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 #include "resource.h"
+#include "verinfo.h"
 ///////////////////////////////// Implementation //////////////////////////////
+
+#define PACKVERSION(major,minor) MAKELONG(minor,major)  
+
+DWORD GetNotifyInfoSize()
+{
+	CFileVersionInfo cfi;
+	if(cfi.Open(_T("Shell32.dll")))
+	{
+		// Versions lower than 5.0
+		if (cfi.GetFileVersionMajor() < 5)
+		{
+			return NOTIFYICONDATA_V1_SIZE;
+		}
+		// 5.0 (Windows 2000)
+		if (cfi.GetFileVersionMajor() == 5)
+		{
+			return NOTIFYICONDATA_V2_SIZE;
+		}
+
+		CString strBuild;
+		strBuild.Format(_T("%d"),
+			cfi.GetFileVersionBuild());
+
+		// 6.0.6 (Windows XP)
+		if (cfi.GetFileVersionMajor() == 6 
+			&& cfi.GetFileVersionMinor() == 0 
+			&& strBuild < _T("6"))
+		{
+			return NOTIFYICONDATA_V3_SIZE;
+		}
+		
+		// 6.0.6 or higher (Windows Vista and later) 	
+		return sizeof(NOTIFYICONDATA);
+    }
+
+	return NOTIFYICONDATA_V1_SIZE;
+}
 
 const UINT wm_TaskbarCreated = RegisterWindowMessage(_T("TaskbarCreated"));
 
@@ -130,6 +168,8 @@ CTrayNotifyIcon::CTrayNotifyIcon()
 	m_pResurrectionWnd = NULL;
 	m_pTimerWnd = NULL;
 	m_bAnimated = FALSE;
+
+	GetNotifyInfoSize();
 }
 
 CTrayNotifyIcon::~CTrayNotifyIcon()
@@ -191,9 +231,9 @@ BOOL CTrayNotifyIcon::Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText,
 	ASSERT(nNotifyMessage >= WM_USER);
 	
 	//Tray only supports tooltip text up to 64 characters
-	ASSERT(_tcslen(pszTooltipText) <= 64);
+	ASSERT(lstrlen(pszTooltipText) <= 64);
 	
-	m_NotifyIconData.cbSize = sizeof(m_NotifyIconData);
+	m_NotifyIconData.cbSize = GetNotifyInfoSize();
 	m_NotifyIconData.hWnd = pNotifyWnd->GetSafeHwnd();
 	m_NotifyIconData.uID = uID;
 	m_NotifyIconData.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
@@ -204,7 +244,7 @@ BOOL CTrayNotifyIcon::Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText,
 	BOOL rVal = Shell_NotifyIcon(NIM_ADD, &m_NotifyIconData);
 	m_bCreated = rVal;
 
-	m_menu.LoadMenu(uID);
+	m_menu.LoadMenu(IDR_MENU_TRAY);
 	
 	return rVal;
 }
@@ -391,42 +431,66 @@ LRESULT CTrayNotifyIcon::OnTrayNotification(WPARAM wID, LPARAM lEvent)
 	//Return quickly if its not for this tray icon
 	if (wID != m_NotifyIconData.uID)
 		return 0L;
-
+	
+	//As a default action use a menu resource with the same id 
+// 	//as this was created with
+// 	CMenu popmenu;
+// 	if (!popmenu.LoadMenu(m_NotifyIconData.uID))
+// 		return 0;
+// 	
+// 	//添加图标菜单
+// 	CMenu * pSubMenu = popmenu.GetSubMenu(0);
+// 	if (!pSubMenu) 
+// 		return 0;
 
 	if(lEvent == WM_RBUTTONUP)
 	{	
-		//As a default action use a menu resource with the same id 
-		//as this was created with
-
-		//鼠标右键按下时，弹出相关菜单		
 		CMenu *pSubMenu = (CMenu *)m_menu.GetSubMenu(0);
-		
+
 		CPoint point;
 		GetCursorPos(&point);
 
 		::SetMenuDefaultItem(pSubMenu->m_hMenu, 0, TRUE);
-		//::SetForegroundWindow(m_NotifyIconData.hWnd);  
+		//::SetForegroundWindow(m_NotifyIconData.hWnd);
 		// Display the File popup menu as a floating popup menu in the
 		// client area of the main application window.
 		pSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON,
 			point.x,
 			point.y,
 			CWnd::FromHandle(m_NotifyIconData.hWnd));
-			//AfxGetApp()->m_pMainWnd);
 	}
 	else if (lEvent == WM_LBUTTONDBLCLK) 
 	{
-		CMenu popmenu;
-		if (!popmenu.LoadMenu(m_NotifyIconData.uID))
-			return 0;
-
-		//添加图标菜单
-		CMenu * pSubMenu = popmenu.GetSubMenu(0);
-		if (!pSubMenu) 
-			return 0;
-
+		CMenu *pSubMenu = (CMenu *)m_menu.GetSubMenu(0);
 		::SendMessage(m_NotifyIconData.hWnd, WM_COMMAND, pSubMenu->GetMenuItemID(0), 0);
+	}
+	else if (lEvent == WM_MBUTTONUP)
+	{
+		::SendMessage(m_NotifyIconData.hWnd, ICON_MBUTTONUP,0,0);
 	}
 	
 	return 1; // handled
+}
+
+BOOL CTrayNotifyIcon::ShowBallonText( LPCTSTR pszText,LPCTSTR pszTitle,UINT nTimeout)
+{
+// 	note.cbSize=sizeof(NOTIFYICONDATA);
+// 	note.hWnd=hWnd;
+// 	note.uFlags=NIF_ICON|NIF_MESSAGE|NIF_INFO|NIF_TIP;
+// 	note.uID=IDI_TRAY;
+// 	note.uCallbackMessage=WM_SHELLNOTIFY;
+// 	lstrcpy(note.szTip,AppName);
+// 	note.dwInfoFlags=NIIF_INFO;
+// 	note.uTimeout=3000;
+// 	lstrcpy(note.szInfo,AppName);
+// 	lstrcpy(note.szInfoTitle,AppName);
+// 	note.hIcon=LoadIcon(NULL,IDI_WINLOGO);
+	lstrcpy(m_NotifyIconData.szInfoTitle, pszTitle);//气球信息标题
+	lstrcpy(m_NotifyIconData.szInfo, pszText);//气球信息
+	m_NotifyIconData.uFlags = NIF_INFO;
+	m_NotifyIconData.uTimeout = nTimeout;//气球提示超时
+	m_NotifyIconData.uVersion=NOTIFYICON_VERSION; //版本
+	m_NotifyIconData.dwInfoFlags =NIIF_INFO; // //气球提示图标
+	return Shell_NotifyIcon(NIM_MODIFY,&m_NotifyIconData);
+
 }

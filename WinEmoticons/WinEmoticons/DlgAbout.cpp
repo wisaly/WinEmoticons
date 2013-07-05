@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "WinEmoticons.h"
 #include "DlgAbout.h"
+#include "ConfigManager.h"
 
 
 // CDlgAbout 
@@ -24,6 +25,7 @@ void CDlgAbout::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_HOME_PAGE, m_editHomePage);
+	DDX_Control(pDX, IDC_VER, m_editVer);
 }
 
 
@@ -44,4 +46,13 @@ void CDlgAbout::OnNMClickLink(NMHDR *pNMHDR, LRESULT *pResult)
 	
 	ShellExecute(NULL, _T("open"),strLink, NULL, NULL, SW_SHOW);
 	*pResult = 0;
+}
+
+BOOL CDlgAbout::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	m_editVer.SetWindowText(CConfigManager::Version());
+
+	return TRUE;  // return TRUE unless you set the focus to a control
 }

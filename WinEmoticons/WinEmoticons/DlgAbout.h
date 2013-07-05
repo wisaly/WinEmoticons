@@ -1,5 +1,6 @@
 #pragma once
 #include "afxcmn.h"
+#include "afxwin.h"
 
 
 // CDlgAbout 
@@ -22,4 +23,6 @@ protected:
 public:
 	afx_msg void OnNMClickLink(NMHDR *pNMHDR, LRESULT *pResult);
 	CLinkCtrl m_editHomePage;
+	CStatic m_editVer;
+	virtual BOOL OnInitDialog();
 };

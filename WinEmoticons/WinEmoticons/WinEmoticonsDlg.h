@@ -36,6 +36,7 @@ public:
     afx_msg void OnTrayExit();
     afx_msg void OnTrayConfig();
     afx_msg void OnTrayAbout();
+	afx_msg LRESULT OnTrayMButtonUp(WPARAM,LPARAM);
 	afx_msg void OnBnClickedCheckNostartpop();
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 	CButton m_editNoStartpop;

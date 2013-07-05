@@ -44,6 +44,7 @@
 #define IDC_HOME_PAGE                   1024
 #define IDC_ISSUE_PAGE                  1025
 #define IDC_GROUP_EMOTICON              1025
+#define IDC_VER                         1026
 #define ID__CONFIG                      32771
 #define ID__ABOUT                       32772
 #define ID__EXIT                        32773
@@ -54,7 +55,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        138
 #define _APS_NEXT_COMMAND_VALUE         32774
-#define _APS_NEXT_CONTROL_VALUE         1026
+#define _APS_NEXT_CONTROL_VALUE         1027
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

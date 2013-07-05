@@ -181,7 +181,7 @@ BEGIN
     DEFPUSHBUTTON   "关闭(&C)",IDOK,153,67,41,14
     ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
     LTEXT           "WinEmoticons",IDC_STATIC,41,7,153,8
-    LTEXT           "版本 : 1.0.0.1",IDC_STATIC,41,16,153,8
+    LTEXT           "版本 : ",IDC_STATIC,41,16,19,8
     LTEXT           "作者 : Kris(wisaly@gmail.com)",IDC_STATIC,41,24,153,8
     LTEXT           "WinEmoticons是自由软件，使用GPL许可协议。",IDC_STATIC,7,70,145,8
     LTEXT           "项目主页 :",IDC_STATIC,7,41,41,8
@@ -190,6 +190,7 @@ BEGIN
     LTEXT           "问题提交 :",IDC_STATIC,7,51,41,8
     CONTROL         "<a>https://github.com/wisaly/WinEmoticons/issues</a>",IDC_ISSUE_PAGE,
                     "SysLink",WS_TABSTOP,43,51,145,10
+    LTEXT           "",IDC_VER,60,16,127,8
 END
 
 
@@ -199,8 +200,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 1,0,0,2
+ PRODUCTVERSION 1,0,0,2
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -222,7 +223,7 @@ BEGIN
             VALUE "LegalCopyright", "wisaly@gmail.com"
             VALUE "OriginalFilename", "WinEmoticons.exe"
             VALUE "ProductName", "WinEmoticons"
-            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "ProductVersion", "1.0.0.2"
         END
     END
     BLOCK "VarFileInfo"
