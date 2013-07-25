@@ -164,13 +164,17 @@ POSITION CDlgEditEmoticons::getEmoPos( int nIndex,CConfigManager::_tag_emoticons
 // add a group, both data and interface
 void CDlgEditEmoticons::addGroup( CString strName )
 {
+	int nCurSel = m_lbxGroup.GetCurSel();
+	
+	POSITION posCurGroup = getGroupPos(nCurSel);
+
 	CConfigManager::_tag_emoticons::_tag_page apage;
 	apage.Caption = strName;
-	m_emoticons.Pages.AddTail(apage);
+	m_emoticons.Pages.InsertAfter(posCurGroup,apage);
 
-	m_lbxGroup.InsertString(m_lbxGroup.GetCurSel() + 1,strName);
+	m_lbxGroup.InsertString(nCurSel + 1,strName);
 	// select new item
-	m_lbxGroup.SetCurSel(m_lbxGroup.GetCurSel() + 1);
+	m_lbxGroup.SetCurSel(nCurSel + 1);
 	OnLbnSelchangeListGroup();
 }
 
@@ -384,11 +388,14 @@ void CDlgEditEmoticons::addEmo( CString strEmo )
 
 	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 
+	int nCurEmo = m_lbxEmos.GetCurSel();
+	POSITION posEmo = getEmoPos(nCurEmo,curPage);
+
 	CConfigManager::_tag_emoticons::_tag_page::_tag_item item;
 	item.Content = strEmo;
-	curPage.Items.AddTail(item);
+	curPage.Items.InsertAfter(posEmo,item);
 
-	m_lbxEmos.InsertString(m_lbxEmos.GetCurSel(),strEmo);
+	m_lbxEmos.InsertString(nCurEmo + 1,strEmo);
 }
 
 // button add emoticon
