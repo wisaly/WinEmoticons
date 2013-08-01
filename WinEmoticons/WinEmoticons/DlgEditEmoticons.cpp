@@ -140,6 +140,10 @@ void CDlgEditEmoticons::OnOK()
 // find position in group list
 POSITION CDlgEditEmoticons::getGroupPos(int nIndex)
 {
+	if (nIndex < 0)
+	{
+		return NULL;
+	}
 	POSITION posCur = m_emoticons.Pages.GetHeadPosition();
 	for (int i = 0;i < nIndex;i ++)
 	{
@@ -152,6 +156,10 @@ POSITION CDlgEditEmoticons::getGroupPos(int nIndex)
 // find position in item list
 POSITION CDlgEditEmoticons::getEmoPos( int nIndex,CConfigManager::_tag_emoticons::_tag_page &curPage )
 {
+	if (nIndex < 0)
+	{
+		return NULL;
+	}
 	POSITION posEmo = curPage.Items.GetHeadPosition();
 	for (int i = 0;i < nIndex;i ++)
 	{
@@ -389,13 +397,23 @@ void CDlgEditEmoticons::addEmo( CString strEmo )
 	CConfigManager::_tag_emoticons::_tag_page &curPage = m_emoticons.Pages.GetAt(pos);
 
 	int nCurEmo = m_lbxEmos.GetCurSel();
-	POSITION posEmo = getEmoPos(nCurEmo,curPage);
 
 	CConfigManager::_tag_emoticons::_tag_page::_tag_item item;
 	item.Content = strEmo;
-	curPage.Items.InsertAfter(posEmo,item);
 
-	m_lbxEmos.InsertString(nCurEmo + 1,strEmo);
+	if (nCurEmo >= 0)
+	{
+		POSITION posEmo = getEmoPos(nCurEmo,curPage);
+
+		curPage.Items.InsertAfter(posEmo,item);
+		m_lbxEmos.InsertString(nCurEmo + 1,strEmo);
+	}
+	else
+	{
+		// not selected, append to end
+		curPage.Items.AddTail(item);
+		m_lbxEmos.AddString(strEmo);
+	}
 }
 
 // button add emoticon
